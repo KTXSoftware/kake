@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<Filter Include="Sources">
+			<UniqueIdentifier>{00000000-0000-0000-0000-000000000000}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="lua">
+			<UniqueIdentifier>{00000000-0000-0000-0000-000000000000}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="../Sources/Ball.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Block.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/ByteStream.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/ClCompile.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Exporter.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/ExporterAndroid.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/ExporterCodeBlocks.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/ExporterEmscripten.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/ExporterVisualStudio.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/ExporterXCode.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Files.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Image.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Options.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Path.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Platform.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Project.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Random.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/Solution.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/String.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/UUID.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/hexball.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/stb_image.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/stb_image_write.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+		<ClInclude Include="../Sources/u128.h">
+			<Filter>Sources</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ClCompile Include="../Sources/Ball.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/ClCompile.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Exporter.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/ExporterAndroid.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/ExporterCodeBlocks.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/ExporterEmscripten.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/ExporterVisualStudio.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/ExporterXCode.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Files.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Image.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Options.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Path.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Project.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Random.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/Solution.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/String.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/UUID.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/main.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/stb_image.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../Sources/u128.cpp">
+			<Filter>Sources</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lapi.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lauxlib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lbaselib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lbitlib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lcode.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lcorolib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lctype.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/ldblib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/ldebug.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/ldo.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/ldump.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lfunc.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lgc.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/linit.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/liolib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/llex.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lmathlib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lmem.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/loadlib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lobject.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lopcodes.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/loslib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lparser.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lstate.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lstring.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lstrlib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/ltable.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/ltablib.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/ltm.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lundump.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lvm.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+		<ClCompile Include="../lua/lzio.c">
+			<Filter>lua</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="icon.ico">
+			<Filter>Ressourcendateien</Filter>
+		</None>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="resources.rc">
+			<Filter>Ressourcendateien</Filter>
+		</ResourceCompile>
+	</ItemGroup>
+</Project>

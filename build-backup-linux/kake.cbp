@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="kake" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/kake" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-std=c++0x" />
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/kake" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-DSYS_LINUX" />
+		</Compiler>
+		<Linker>
+
+		</Linker>
+		<Unit filename="../Sources/Ball.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ClCompile.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Exporter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterAndroid.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterCodeBlocks.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterEmscripten.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterVisualStudio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterXCode.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Files.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Options.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Path.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Project.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Random.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Solution.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/String.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/UUID.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/main.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/stb_image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/u128.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lapi.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lauxlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lbaselib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lbitlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lcode.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lcorolib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lctype.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/ldblib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/ldebug.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/ldo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/ldump.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lfunc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lgc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/linit.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/liolib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/llex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lmathlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lmem.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/loadlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lobject.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lopcodes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/loslib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lparser.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lstate.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lstring.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lstrlib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/ltable.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/ltablib.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/ltm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lundump.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lvm.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../lua/lzio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<debugger />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
