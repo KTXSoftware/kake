@@ -2,6 +2,14 @@
 
 using namespace kake;
 
+namespace {
+	std::string str(int i) {
+		char buffer[20];
+		snprintf(buffer, sizeof(buffer), "%d", i);
+		return buffer;
+	}
+}
+
 ClCompile::ClCompile(std::ofstream* out, int indentation, Platform platform, Configuration configuration, std::vector<std::string> includes, std::vector<std::string> defines) : Block(out, indentation), platform(platform), includes(includes), defines(defines) {
 	warningLevel = 3;
 	optimization = false;
@@ -106,7 +114,7 @@ void ClCompile::print() {
 	tagStart("ClCompile");
 	tag("AdditionalIncludeDirectories", includeLine);
 	if (platform == Platform::Windows) {
-		tag("WarningLevel", "Level" + warningLevel);
+		tag("WarningLevel", "Level" + str(warningLevel));
 		tag("Optimization", optimization ? "Enabled" : "Disabled");
 		tag("PreprocessorDefinitions", defineLine);
 		tag("RuntimeLibrary", runtimeLibrary);
@@ -128,7 +136,7 @@ void ClCompile::print() {
 	}
 	else if (platform == Platform::Xbox360) {
 		tag("PrecompiledHeader", "Use");
-		tag("WarningLevel", "Level" + warningLevel);
+		tag("WarningLevel", "Level" + str(warningLevel));
 		tag("DebugInformationFormat", "ProgramDatabase");
 		tag("Optimization", optimization ? "Full" : "Disabled");
 		if (functionLevelLinking) tag("FunctionLevelLinking", "true");

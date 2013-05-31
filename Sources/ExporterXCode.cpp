@@ -173,23 +173,8 @@ void ExporterXCode::exportSolution(Solution* solution, Path directory, Platform 
 	if (plistname.size() == 0) throw std::runtime_error("no plist found");
 
 	std::vector<Framework*> frameworks;
-	if (platform == iOS) {
-		frameworks.push_back(new Framework("UIKit"));
-		frameworks.push_back(new Framework("Foundation"));
-		frameworks.push_back(new Framework("CoreGraphics"));
-		frameworks.push_back(new Framework("QuartzCore"));
-		frameworks.push_back(new Framework("OpenGLES"));
-		frameworks.push_back(new Framework("AVFoundation"));
-		frameworks.push_back(new Framework("CoreAudio"));
-		frameworks.push_back(new Framework("OpenAL"));
-		frameworks.push_back(new Framework("AudioToolbox"));
-	}
-	else {
-		frameworks.push_back(new Framework("Cocoa"));
-		frameworks.push_back(new Framework("AppKit"));
-		frameworks.push_back(new Framework("CoreData"));
-		frameworks.push_back(new Framework("Foundation"));
-		frameworks.push_back(new Framework("OpenGL"));
+	for (std::string lib : project->getLibs()) {
+		frameworks.push_back(new Framework(lib));
 	}
 
 	std::string projectId = newId();
