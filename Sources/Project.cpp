@@ -28,7 +28,14 @@ void Project::flatten() {
 		for (std::string define : sub->defines) if (!contains(defines, define)) defines.push_back(define);
 		for (std::string file : sub->files) files.push_back(stringify(subbasedir.resolve(file)));
 		for (std::string include : sub->includeDirs) if (!contains(includeDirs, stringify(subbasedir.resolve(include)))) includeDirs.push_back(stringify(subbasedir.resolve(include)));
-		for (std::string lib : sub->libs) if (!contains(libs, stringify(subbasedir.resolve(lib)))) libs.push_back(stringify(subbasedir.resolve(lib)));
+		for (std::string lib : sub->libs) {
+			if (!contains(lib, '/') && !contains(lib, '\\')) {
+				if (!contains(libs, lib)) libs.push_back(lib);
+			}
+			else {
+				if (!contains(libs, stringify(subbasedir.resolve(lib)))) libs.push_back(stringify(subbasedir.resolve(lib)));
+			}
+		}
 		for (auto system : sub->systemDependendLibraries) {
 			for (std::string lib : system.second) {
 				if (systemDependendLibraries.find(system.first) == systemDependendLibraries.end()) systemDependendLibraries[system.first] = std::vector<std::string>();
