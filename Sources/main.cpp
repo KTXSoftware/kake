@@ -22,6 +22,10 @@
 #include <errno.h>
 #endif
 
+#ifdef SYS_WINDOWS
+#include <Windows.h>
+#endif
+
 using namespace kake;
 
 extern Path koreDir;
@@ -82,8 +86,31 @@ namespace {
 				return "unknown";
 		}
 	}
+
+	void executeSync(const char* command) {
+#ifdef SYS_WINDOWS
+		STARTUPINFOA startupInfo;
+		PROCESS_INFORMATION processInfo;
+		memset(&startupInfo, 0, sizeof(startupInfo));
+		memset(&processInfo, 0, sizeof(processInfo));
+		startupInfo.cb = sizeof(startupInfo);
+		CreateProcessA(nullptr, (char*)command, nullptr, nullptr, FALSE, CREATE_DEFAULT_ERROR_MODE, nullptr, nullptr, &startupInfo, &processInfo);
+		WaitForSingleObject(processInfo.hProcess, INFINITE);
+		CloseHandle(processInfo.hProcess);
+		CloseHandle(processInfo.hThread);
+#else
+		system(command);
+#endif
+	}
 }
 	void compileShader(std::string type, std::string from, std::string to, std::string temp) {
+#ifdef SYS_WINDOWS
+		if (koreDir.toString().size() > 0) {
+			Path path = koreDir.resolve(Paths::get("Tools", "kfx", "kfx.exe"));
+			std::string exe = path.toString() + " " + type + " " + from + " " + to + " " + temp;
+			executeSync(exe.c_str());
+		}
+#endif
 #ifdef SYS_OSX
 		if (koreDir.toString().size() > 0) {
 			Path path = koreDir.resolve(Paths::get("Tools", "kfx", "kfx-osx"));
@@ -120,7 +147,7 @@ namespace {
 		else if (platform == Linux) exporter = new ExporterCodeBlocks();
 		else exporter = new ExporterVisualStudio();
 		exporter->exportSolution(solution, directory, platform);
-#ifndef SYS_WINDOWS
+
 		Project* project = solution->getProjects()[0];
 		std::vector<std::string> files = project->getFiles();
 		for (std::string file : files) {
@@ -132,7 +159,7 @@ namespace {
 				compileShader(shaderLang(platform), file, project->getDebugDir() + "/" + outfile, "build");
 			}
 		}
-#endif
+
 		std::cout << ".done." << std::endl;
 		return solution->getName();
 	}

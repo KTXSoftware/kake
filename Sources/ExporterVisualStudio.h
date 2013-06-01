@@ -28,5 +28,7 @@ namespace kake {
 				bool profile, bool nocomdatfolding, bool ignoreXapilib, bool optimizeReferences, bool checksum, bool fastCap,
 				bool comdatfolding, bool ltcg, Platform platform);
 		void exportProject(Path directory, Project* project, Platform platform, bool cmd);
+		void exportAssetPath(Path assetPath);
+		void exportAssetPathFilter(Path assetPath, std::vector<std::string>& dirs, std::vector<std::string>& assets);
 	};
 }

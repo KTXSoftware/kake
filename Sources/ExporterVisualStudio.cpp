@@ -196,6 +196,15 @@ void ExporterVisualStudio::exportResourceScript(Path directory) {
 	closeFile();
 }
 
+void ExporterVisualStudio::exportAssetPathFilter(Path assetPath, std::vector<std::string>& dirs, std::vector<std::string>& assets) {
+	std::string dir = assetPath.toString();
+	if (!contains(dirs, dir)) dirs.push_back(dir);
+	for (auto path : Files::newDirectoryStream(assetPath)) {
+		if (Files::isDirectory(path)) exportAssetPathFilter(path, dirs, assets);
+		else assets.push_back(path.toString());
+	}
+}
+
 void ExporterVisualStudio::exportFilters(Path directory, Project* project, Platform platform) {
 	for (Project* proj : project->getSubProjects()) exportFilters(directory, proj, platform);
 
@@ -221,17 +230,19 @@ void ExporterVisualStudio::exportFilters(Path directory, Project* project, Platf
 			}
 		}
 	}
+	std::vector<std::string> assets;
+	if (platform == Platform::WindowsRT) exportAssetPathFilter(directory.resolve(project->getDebugDir()), dirs, assets);
 
 	p("<ItemGroup>", 1);
 	for (std::string dir : dirs) {
 		p("<Filter Include=\"" + replace(dir, '/', '\\') + "\">", 2);
 		p("<UniqueIdentifier>{" + toUpperCase(UUID::randomUUID().toString()) + "}</UniqueIdentifier>", 3);
 		p("</Filter>", 2);
-		if (platform == Platform::WindowsRT) {
-			p("<Filter Include=\"Package\">", 2);
-			p("<UniqueIdentifier>{" + toUpperCase(UUID::randomUUID().toString()) + "}</UniqueIdentifier>", 3);
-			p("</Filter>", 2);
-		}
+	}
+	if (platform == Platform::WindowsRT) {
+		p("<Filter Include=\"Package\">", 2);
+		p("<UniqueIdentifier>{" + toUpperCase(UUID::randomUUID().toString()) + "}</UniqueIdentifier>", 3);
+		p("</Filter>", 2);
 	}
 	p("</ItemGroup>", 1);
 
@@ -317,6 +328,21 @@ void ExporterVisualStudio::exportFilters(Path directory, Project* project, Platf
 		}
 	}
 	p("</ItemGroup>", 1);
+
+	if (platform == Platform::WindowsRT) {
+		lastdir = "";
+		p("<ItemGroup>", 1);
+		for (std::string file : assets) {
+			if (contains(file, "/")) {
+				std::string dir = file.substr(0, lastIndexOf(file, '/'));
+				if (dir != lastdir) lastdir = dir;
+				p(std::string("<None Include=\"") + "../" + file + "\">", 2);
+				p("<Filter>" + replace(dir, '/', '\\') + "</Filter>", 3);
+				p("</None>", 2);
+			}
+		}
+		p("</ItemGroup>", 1);
+	}
 
 	if (platform == Platform::Windows) {
 		p("<ItemGroup>", 1);
@@ -697,6 +723,10 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 		p("<ItemGroup>", 1);
 		p("<AppxManifest Include=\"Package.appxmanifest\" />", 2);
 		p("</ItemGroup>", 1);
+
+		p("<ItemGroup>", 1);
+		exportAssetPath(directory.resolve(project->getDebugDir()));
+		p("</ItemGroup>", 1);
 	}
 
 	p("<ItemGroup>", 1);
@@ -792,4 +822,17 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 	p("</ImportGroup>", 1);
 	p("</Project>");
 	closeFile();
+}
+
+void ExporterVisualStudio::exportAssetPath(Path assetPath) {
+	for (auto path : Files::newDirectoryStream(assetPath)) {
+		if (Files::isDirectory(path)) {
+			exportAssetPath(path);
+		}
+		else {
+			p(std::string("<None Include=\"../") + path.toString() + "\">", 2);
+				p("<DeploymentContent>true</DeploymentContent>", 3);
+			p("</None>", 2);
+		}
+	}
 }
