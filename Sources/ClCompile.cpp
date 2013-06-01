@@ -2,6 +2,10 @@
 
 using namespace kake;
 
+#if _MSC_VER
+#define snprintf _snprintf
+#endif
+
 namespace {
 	std::string str(int i) {
 		char buffer[20];

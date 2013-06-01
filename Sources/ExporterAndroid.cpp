@@ -6,8 +6,24 @@
 
 using namespace kake;
 
-void ExporterAndroid::createDirectory(Path dir) {
-	if (!Files::exists(dir)) Files::createDirectories(dir);
+extern Path koreDir;
+
+namespace {
+	void createDirectory(Path dir) {
+		if (!Files::exists(dir)) Files::createDirectories(dir);
+	}
+
+	void copyDirectory(Path from, Path to) {
+		createDirectory(to);
+		for (auto path : Files::newDirectoryStream(from)) {
+			if (Files::isDirectory(path)) {
+				copyDirectory(path, to.resolve(from.relativize(path)));
+			}
+			else {
+				Files::copy(path, to.resolve(from.relativize(path)), true);
+			}
+		}
+	}
 }
 	
 void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platform platform) {
@@ -17,11 +33,13 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 	bool nvpack = false; //Configuration.getAndroidDevkit() == AndroidDevkit.nVidia;
 		
 	createDirectory(directory.resolve("build"));
+
+	copyDirectory(directory.resolve(project->getDebugDir()), directory.resolve(Paths::get("build", "assets")));
 		
 	writeFile(directory.resolve(Paths::get("build", ".classpath")));
 	p("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 	p("<classpath>");
-		p("<classpathentry kind=\"src\" path=\"Kt/Backends/Android/Java-Sources\"/>", 1);
+		p("<classpathentry kind=\"src\" path=\"Java-Sources\"/>", 1);
 		p("<classpathentry kind=\"src\" path=\"gen\"/>", 1);
 		p("<classpathentry kind=\"con\" path=\"com.android.ide.eclipse.adt.ANDROID_FRAMEWORK\"/>", 1);
 		p("<classpathentry kind=\"con\" path=\"com.android.ide.eclipse.adt.LIBRARIES\"/>", 1);
@@ -137,10 +155,30 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 		p("</natures>", 1);
 		p("<linkedResources>", 1);
 			p("<link>", 2);
-				p("<name>Kt</name>", 3);
-				p("<type>2</type>", 3);
-				p("<location>" + replace(directory.resolve("Kt").toString(), '\\', '/') + "</location>", 3);
-			p("</link>", 2);
+					p("<name>Sources</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(directory.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>Kore</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>Android-Backend</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve(Paths::get("Backends", "Android", "Sources")).toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>OpenGL2-Backend</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve(Paths::get("Backends", "OpenGL2", "Sources")).toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>Java-Sources</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve(Paths::get("Backends", "Android", "Java-Sources")).toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
 		p("</linkedResources>", 1);
 		p("</projectDescription>");
 		closeFile();
@@ -245,9 +283,29 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 			p("</natures>", 1);
 			p("<linkedResources>", 1);
 				p("<link>", 2);
-					p("<name>Kt</name>", 3);
+					p("<name>Sources</name>", 3);
 					p("<type>2</type>", 3);
-					p("<location>" + replace(directory.resolve("Kt").toString(), '\\', '/') + "</location>", 3);
+					p("<location>" + replace(directory.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>Kore</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>Android-Backend</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve(Paths::get("Backends", "Android", "Sources")).toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>OpenGL2-Backend</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve(Paths::get("Backends", "OpenGL2", "Sources")).toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+				p("</link>", 2);
+				p("<link>", 2);
+					p("<name>Java-Sources</name>", 3);
+					p("<type>2</type>", 3);
+					p("<location>" + replace(koreDir.resolve(Paths::get("Backends", "Android", "Java-Sources")).toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
 				p("</link>", 2);
 			p("</linkedResources>", 1);
 		p("</projectDescription>");
@@ -350,7 +408,10 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 							p("</folderInfo>", 5);
 							p("<sourceEntries>", 5);
 								p("<entry flags=\"VALUE_WORKSPACE_PATH|RESOLVED\" kind=\"sourcePath\" name=\"jni\"/>", 6);
-								p("<entry flags=\"VALUE_WORKSPACE_PATH|RESOLVED\" kind=\"sourcePath\" name=\"Kt\"/>", 6);
+								p("<entry flags=\"VALUE_WORKSPACE_PATH|RESOLVED\" kind=\"sourcePath\" name=\"Kore\"/>", 6);
+								p("<entry flags=\"VALUE_WORKSPACE_PATH|RESOLVED\" kind=\"sourcePath\" name=\"Sources\"/>", 6);
+								p("<entry flags=\"VALUE_WORKSPACE_PATH|RESOLVED\" kind=\"sourcePath\" name=\"Android-Backend\"/>", 6);
+								p("<entry flags=\"VALUE_WORKSPACE_PATH|RESOLVED\" kind=\"sourcePath\" name=\"OpenGL2-Backend\"/>", 6);
 							p("</sourceEntries>", 5);
 						p("</configuration>", 4);
 					p("</storageModule>", 3);
@@ -373,14 +434,14 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 	writeFile(directory.resolve(Paths::get("build", "AndroidManifest.xml")));
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	p("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"");
-		p("package=\"com.ktxsoftware.kt\"", 1);
+		p("package=\"com.ktxsoftware.kore\"", 1);
 		p("android:versionCode=\"1\"");
 		p("android:versionName=\"1.0\">");
 		p();
-		p("<uses-sdk android:minSdkVersion=\"7\" android:targetSdkVersion=\"17\"/>", 1);
+		p("<uses-sdk android:minSdkVersion=\"8\" android:targetSdkVersion=\"17\"/>", 1);
 		p();
 		p("<application android:label=\"@string/app_name\">", 1);
-			p("<activity android:name=\"KtActivity\"", 2);
+			p("<activity android:name=\"KoreActivity\"", 2);
 				p("android:label=\"@string/app_name\"", 3);
 				p("android:configChanges=\"orientation|keyboardHidden\">", 3);
 				p("<intent-filter>", 3);
@@ -393,7 +454,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 	closeFile();
 		
 	writeFile(directory.resolve(Paths::get("build", "project.properties")));
-	p("target=android-7");
+	p("target=android-8");
 	closeFile();
 		
 	createDirectory(directory.resolve(Paths::get("build", ".settings")));
@@ -484,7 +545,7 @@ $(call import-module,nv_thread)
 	p();
 	p("include $(CLEAR_VARS)");
 	p();
-	p("LOCAL_MODULE    := Kt");
+	p("LOCAL_MODULE    := Kore");
 	std::string files = "";
 	for (std::string filename : project->getFiles()) if (endsWith(filename, ".c") || endsWith(filename, ".cpp") || endsWith(filename, ".cc") || endsWith(filename, ".s")) files += "../../" + filename + " ";
 	p("LOCAL_SRC_FILES := " + files);
@@ -494,7 +555,7 @@ $(call import-module,nv_thread)
 	std::string includes = "";
 	for (std::string inc : project->getIncludeDirs()) includes += "$(LOCAL_PATH)/../../" + inc + " ";
 	p("LOCAL_C_INCLUDES := " + includes);
-	p("LOCAL_LDLIBS    := -llog -lGLESv1_CM");
+	p("LOCAL_LDLIBS    := -llog -lGLESv2");
 	p();
 	p("include $(BUILD_SHARED_LIBRARY)");
 	p();
