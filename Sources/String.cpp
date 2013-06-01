@@ -75,7 +75,7 @@ std::vector<std::string> split(std::string string, char c) {
 	std::vector<std::string> values;
 	unsigned start = 0;
 	for (unsigned i = 0; i < string.size(); ++i) {
-		if (string[i] == 'c') {
+		if (string[i] == c) {
 			values.push_back(string.substr(start, i - start));
 			start = i + 1;
 		}

@@ -31,14 +31,14 @@ namespace {
 		switch (platform) {
 		case Windows:
 			return "Windows";
-		case Windows8:
-			return "Windows 8";
+		case WindowsRT:
+			return "WindowsRT";
 		case PlayStation3:
 			return "PlayStation 3";
 		case iOS:
 			return "iOS";
 		case OSX:
-			return "Mac OS X";
+			return "OS X";
 		case Android:
 			return "Android";
 		case Xbox360:
@@ -64,7 +64,7 @@ namespace {
 					default:
 						return "d3d9";
 				}
-			case Windows8:
+			case WindowsRT:
 				return "d3d11";
 			case PlayStation3:
 				return "d3d9";
@@ -85,14 +85,14 @@ namespace {
 }
 	void compileShader(std::string type, std::string from, std::string to, std::string temp) {
 #ifdef SYS_OSX
-        if (koreDir.toString().size() > 0) {
+		if (koreDir.toString().size() > 0) {
 			Path path = koreDir.resolve(Paths::get("Tools", "kfx", "kfx-osx"));
 			std::string exe = path.toString() + " " + type + " " + from + " " + to + " " + temp;
 			system(exe.c_str());
 		}
 #endif
 #ifdef SYS_LINUX
-        if (koreDir.toString().size() > 0) {
+		if (koreDir.toString().size() > 0) {
 			Path path = koreDir.resolve(Paths::get("Tools", "kfx", "kfx-linux"));
 			std::string exe = path.toString() + " " + type + " " + from + " " + to + " " + temp;
 			system(exe.c_str());
@@ -171,7 +171,7 @@ int main(int argc, char** argv) {
 		else if (arg == "xbox360") platform = Xbox360;
 		else if (arg == "ps3") platform = PlayStation3;
 		else if (arg == "android") platform = Android;
-		else if (arg == "windows8") platform = Windows8;
+		else if (arg == "windowsrt") platform = WindowsRT;
 		else if (arg == "osx") platform = OSX;
 		else if (arg == "ios") platform = iOS;
 

@@ -64,7 +64,7 @@ std::vector<std::string> ExporterVisualStudio::getConfigs(Platform platform) {
 }
 
 std::vector<std::string> ExporterVisualStudio::getSystems(Platform platform) {
-	if (platform == Platform::Windows8) return windows8systems;
+	if (platform == Platform::WindowsRT) return windows8systems;
 	if (platform == Platform::PlayStation3) return ps3systems;
 	else if (platform == Platform::Xbox360) return xboxsystems;
 	else return windowssystems;
@@ -79,7 +79,7 @@ void ExporterVisualStudio::writeProjectBuilds(Project* project, Platform platfor
 		for (std::string system : getSystems(platform)) {
 			p("{" + toUpperCase(project->getUuid().toString()) + "}." + config + "|" + system + ".ActiveCfg = " + config + "|" + system, 2);
 			p("{" + toUpperCase(project->getUuid().toString()) + "}." + config + "|" + system + ".Build.0 = " + config + "|" + system, 2);
-			if (platform == Platform::Windows8) {
+			if (platform == Platform::WindowsRT) {
 				p("{" + toUpperCase(project->getUuid().toString()) + "}." + config + "|" + system + ".Deploy.0 = " + config + "|" + system, 2);
 			}
 		}
@@ -108,7 +108,7 @@ void ExporterVisualStudio::exportSolution(Solution* solution, Path directory, Pl
 
 	writeFile(directory.resolve(Paths::get("build", solution->getName() + ".sln")));
 
-	if (platform == Platform::Windows8 || (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2012)) {
+	if (platform == Platform::WindowsRT || (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2012)) {
 		p("Microsoft Visual Studio Solution File, Format Version 12.00");
 		p("# Visual Studio 2012");
 	}
@@ -139,7 +139,7 @@ void ExporterVisualStudio::exportSolution(Solution* solution, Path directory, Pl
 		exportProject(directory, project, platform, solution->isCmd());
 		exportFilters(directory, project, platform);
 		exportUserFile(directory, project, platform);
-		if (platform == Platform::Windows8) {
+		if (platform == Platform::WindowsRT) {
 			exportManifest(directory, project);
 			Ball::the()->exportTo(directory.resolve(Paths::get("build", "Logo.png")), 150, 150, white, directory);
 			Ball::the()->exportTo(directory.resolve(Paths::get("build", "SmallLogo.png")), 30, 30, white, directory);
@@ -227,7 +227,7 @@ void ExporterVisualStudio::exportFilters(Path directory, Project* project, Platf
 		p("<Filter Include=\"" + replace(dir, '/', '\\') + "\">", 2);
 		p("<UniqueIdentifier>{" + toUpperCase(UUID::randomUUID().toString()) + "}</UniqueIdentifier>", 3);
 		p("</Filter>", 2);
-		if (platform == Platform::Windows8) {
+		if (platform == Platform::WindowsRT) {
 			p("<Filter Include=\"Package\">", 2);
 			p("<UniqueIdentifier>{" + toUpperCase(UUID::randomUUID().toString()) + "}</UniqueIdentifier>", 3);
 			p("</Filter>", 2);
@@ -235,7 +235,7 @@ void ExporterVisualStudio::exportFilters(Path directory, Project* project, Platf
 	}
 	p("</ItemGroup>", 1);
 
-	if (platform == Platform::Windows8) {
+	if (platform == Platform::WindowsRT) {
 		p("<ItemGroup>", 1);
 		p("<AppxManifest Include=\"Package.appxmanifest\">", 2);
 		p("<Filter>Package</Filter>", 3);
@@ -420,7 +420,7 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 	p(std::string("<ProjectGuid>{") + toUpperCase(project->getUuid().toString()) + "}</ProjectGuid>", 2);
 	//p("<Keyword>Win32Proj</Keyword>", 2);
 	//p("<RootNamespace>" + project.Name + "</RootNamespace>", 2);
-	if (platform == Platform::Windows8) {
+	if (platform == Platform::WindowsRT) {
 		p("<DefaultLanguage>en-US</DefaultLanguage>", 2);
 		p("<MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>", 2);
 		p("<AppContainerApplication>true</AppContainerApplication>", 2);
@@ -435,7 +435,7 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 		addPropertyGroup("Release", platform);
 		addPropertyGroup("Release_LTCG", true, platform);
 	}
-	else if (platform == Platform::Windows8) {
+	else if (platform == Platform::WindowsRT) {
 		addWin8PropertyGroup(true, "Win32");
 		addWin8PropertyGroup(true, "ARM");
 		addWin8PropertyGroup(true, "x64");
@@ -477,7 +477,7 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 	p("<Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />", 1);
 	p("<ImportGroup Label=\"ExtensionSettings\">", 1);
 	p("</ImportGroup>", 1);
-	if (platform == Platform::Windows8) {
+	if (platform == Platform::WindowsRT) {
 		std::vector<std::string> configurations;
 		configurations.push_back("Debug");
 		configurations.push_back("Release");
@@ -498,7 +498,7 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 	}
 	p("<PropertyGroup Label=\"UserMacros\" />", 1);
 
-	if (platform == Platform::Windows8) {
+	if (platform == Platform::WindowsRT) {
 	//<PropertyGroup>
 	//<PackageCertificateKeyFile>Direct3DApplication1_TemporaryKey.pfx</PackageCertificateKeyFile>
 	//</PropertyGroup>
@@ -552,12 +552,12 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 		addItemDefinitionGroup(incstring, defines, "Release",         3, false, true,  true,  true,  true,  true,  false, false, false, true,  true,  false, true,  false, platform);
 		addItemDefinitionGroup(incstring, defines, "Release_LTCG",    3, false, true,  true,  true,  true,  true,  false, false, false, true,  true,  false, true,  true , platform);
 	}
-	else if (platform == Platform::Windows8) {
+	else if (platform == Platform::WindowsRT) {
 		p("<ItemDefinitionGroup>", 1);
 			p("<Link>", 2);
 				p("<AdditionalDependencies>d2d1.lib; d3d11.lib; dxgi.lib; ole32.lib; windowscodecs.lib; dwrite.lib; %(AdditionalDependencies)</AdditionalDependencies>", 3);
 			p("</Link>", 2);
-			ClCompile* compile = new ClCompile(out, 2, Platform::Windows8, Configuration::Debug, split(incstring, ';'), split(defines, ';'));
+			ClCompile* compile = new ClCompile(out, 2, Platform::WindowsRT, Configuration::Debug, split(incstring, ';'), split(defines, ';'));
 			compile->print();
 		p("</ItemDefinitionGroup>", 1);
 	}
@@ -675,7 +675,7 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 	}
 	p("</ItemGroup>", 1);
 
-	if (platform == Platform::Windows8) {
+	if (platform == Platform::WindowsRT) {
 		p("<ItemDefinitionGroup Condition=\"'$(Configuration)'=='Release'\">", 1);
 			p("<ClCompile>", 2);
 				p("<PreprocessorDefinitions>" + defines + "NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>", 3);

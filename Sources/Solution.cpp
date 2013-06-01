@@ -19,9 +19,9 @@ namespace {
 			defines.push_back("_CRT_SECURE_NO_WARNINGS");
 			defines.push_back("SYS_WINDOWS");
 			break;
-		case Windows8:
+		case WindowsRT:
 			defines.push_back("_CRT_SECURE_NO_WARNINGS");
-			defines.push_back("SYS_WINDOWS8");
+			defines.push_back("SYS_WINDOWSRT");
 			break;
 		case PlayStation3:
 			defines.push_back("SYS_PS3");
@@ -331,8 +331,8 @@ namespace {
 		lua_setfield(L, -2, "PlayStation3");
 		lua_pushinteger(L, (int)Platform::Windows);
 		lua_setfield(L, -2, "Windows");
-		lua_pushinteger(L, (int)Platform::Windows8);
-		lua_setfield(L, -2, "Windows8");
+		lua_pushinteger(L, (int)Platform::WindowsRT);
+		lua_setfield(L, -2, "WindowsRT");
 		lua_pushinteger(L, (int)Platform::Xbox360);
 		lua_setfield(L, -2, "Xbox360");
 		lua_setglobal(L, "Platform");

@@ -23,7 +23,7 @@ ClCompile::ClCompile(std::ofstream* out, int indentation, Platform platform, Con
 	generateDebugInformation = false;
 	//this.configuration = configuration;
 	switch (platform) {
-	case Windows8:
+	case WindowsRT:
 		this->includes.push_back("$(ProjectDir)");
 		this->includes.push_back("$(IntermediateOutputPath)");
 		this->includes.push_back("%(AdditionalIncludeDirectories)");
@@ -126,7 +126,7 @@ void ClCompile::print() {
 		tag("MinimalRebuild", minimalRebuild ? "true" : "false");
 		tag("ObjectFileName", objectFileName);
 	}
-	else if (platform == Platform::Windows8) {
+	else if (platform == Platform::WindowsRT) {
 		//tag("PreprocessorDefinitions", defineLine);
 		tag("PrecompiledHeader", "NotUsing");
 		tag("ObjectFileName", objectFileName);

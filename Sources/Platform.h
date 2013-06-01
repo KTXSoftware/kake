@@ -3,7 +3,7 @@
 namespace kake {
 	enum Platform {
 		Windows,
-		Windows8,
+		WindowsRT,
 		PlayStation3,
 		iOS,
 		OSX,
