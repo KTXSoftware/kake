@@ -581,7 +581,7 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 	else if (platform == Platform::WindowsRT) {
 		p("<ItemDefinitionGroup>", 1);
 			p("<Link>", 2);
-				p("<AdditionalDependencies>d2d1.lib; d3d11.lib; dxgi.lib; ole32.lib; windowscodecs.lib; dwrite.lib; %(AdditionalDependencies)</AdditionalDependencies>", 3);
+				p("<AdditionalDependencies>MMDevAPI.lib;MFuuid.lib;MFReadWrite.lib;MFplat.lib;d2d1.lib;d3d11.lib;dxgi.lib;ole32.lib;windowscodecs.lib;dwrite.lib;%(AdditionalDependencies)</AdditionalDependencies>", 3);
 			p("</Link>", 2);
 			ClCompile* compile = new ClCompile(out, 2, Platform::WindowsRT, Configuration::Debug, split(incstring, ';'), split(defines, ';'));
 			compile->print();

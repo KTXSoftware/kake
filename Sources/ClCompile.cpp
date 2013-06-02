@@ -19,7 +19,7 @@ ClCompile::ClCompile(std::ofstream* out, int indentation, Platform platform, Con
 	optimization = false;
 	runtimeLibrary = "MultiThreadedDebug";
 	multiProcessorCompilation = true;
-	objectFileName = "$(IntDir)\\%(RelativeDir)";
+	objectFileName = "$(IntDir)\\build\\%(RelativeDir)";
 	generateDebugInformation = false;
 	//this.configuration = configuration;
 	switch (platform) {
