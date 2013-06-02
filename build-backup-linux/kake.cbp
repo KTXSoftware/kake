@@ -30,12 +30,10 @@
 			</Target>
 		</Build>
 		<Compiler>
+			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-DSYS_LINUX" />
 		</Compiler>
-		<Linker>
-
-		</Linker>
 		<Unit filename="../Sources/Ball.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
