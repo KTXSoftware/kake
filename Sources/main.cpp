@@ -1,5 +1,6 @@
 #include "ExporterAndroid.h"
 #include "ExporterCodeBlocks.h"
+#include "ExporterEmscripten.h"
 #include "ExporterVisualStudio.h"
 #include "ExporterXCode.h"
 #include "Files.h"
@@ -49,6 +50,8 @@ namespace {
 			return "Xbox 360";
 		case Linux:
 			return "Linux";
+        case HTML5:
+            return "HTML5";
 		default:
 			return "unknown";
 		}
@@ -82,6 +85,8 @@ namespace {
 				return "d3d9";
 			case Linux:
 				return "glsl";
+            case HTML5:
+                return "essl";
 			default:
 				return "unknown";
 		}
@@ -131,8 +136,7 @@ namespace {
 	std::string exportKakeProject(Path directory, Platform platform) {
 		std::cout << "kake.lua found, generating build files." << std::endl;
 
-		if (platform == HTML5) std::cout << "Compiling to JavaScript." << std::endl;
-		else std::cout << "Generating " << fromPlatform(platform) + " solution";
+		std::cout << "Generating " << fromPlatform(platform) + " solution";
 
 		Solution* solution = Solution::create(directory, platform);
 		std::cout << ".";
@@ -143,7 +147,7 @@ namespace {
 		Exporter* exporter = nullptr;
 		if (platform == iOS || platform == OSX) exporter = new ExporterXCode();
 		else if (platform == Android) exporter = new ExporterAndroid();
-		//else if (platform == HTML5) exporter = new ExporterEmscripten();
+		else if (platform == HTML5) exporter = new ExporterEmscripten();
 		else if (platform == Linux) exporter = new ExporterCodeBlocks();
 		else exporter = new ExporterVisualStudio();
 		exporter->exportSolution(solution, directory, platform);
@@ -186,7 +190,7 @@ int main(int argc, char** argv) {
 	Platform platform = Platform::Windows;
 	#endif
 	#ifdef SYS_LINUX
-	Platform platform = Platform::Linux;
+	Platform platform = Platform::HTML5;
 	#endif
 	#ifdef SYS_OSX
 	Platform platform = Platform::OSX;
@@ -201,6 +205,7 @@ int main(int argc, char** argv) {
 		else if (arg == "windowsrt") platform = WindowsRT;
 		else if (arg == "osx") platform = OSX;
 		else if (arg == "ios") platform = iOS;
+		else if (arg == "html5") platform = HTML5;
 
 		else if (arg == "pch") Options::setPrecompiledHeaders(true);
 		else if (startsWith(arg, "intermediate=")) Options::setIntermediateDrive(arg.substr(13));
