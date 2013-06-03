@@ -144,13 +144,6 @@ namespace {
 		std::cout << ".";
 		solution->flatten();
 		std::cout << ".";
-		Exporter* exporter = nullptr;
-		if (platform == iOS || platform == OSX) exporter = new ExporterXCode();
-		else if (platform == Android) exporter = new ExporterAndroid();
-		else if (platform == HTML5) exporter = new ExporterEmscripten();
-		else if (platform == Linux) exporter = new ExporterCodeBlocks();
-		else exporter = new ExporterVisualStudio();
-		exporter->exportSolution(solution, directory, platform);
 
 		Project* project = solution->getProjects()[0];
 		std::vector<std::string> files = project->getFiles();
@@ -163,6 +156,14 @@ namespace {
 				compileShader(shaderLang(platform), file, project->getDebugDir() + "/" + outfile, "build");
 			}
 		}
+
+		Exporter* exporter = nullptr;
+		if (platform == iOS || platform == OSX) exporter = new ExporterXCode();
+		else if (platform == Android) exporter = new ExporterAndroid();
+		else if (platform == HTML5) exporter = new ExporterEmscripten();
+		else if (platform == Linux) exporter = new ExporterCodeBlocks();
+		else exporter = new ExporterVisualStudio();
+		exporter->exportSolution(solution, directory, platform);
 
 		std::cout << ".done." << std::endl;
 		return solution->getName();
@@ -190,7 +191,7 @@ int main(int argc, char** argv) {
 	Platform platform = Platform::Windows;
 	#endif
 	#ifdef SYS_LINUX
-	Platform platform = Platform::HTML5;
+	Platform platform = Platform::Linux;
 	#endif
 	#ifdef SYS_OSX
 	Platform platform = Platform::OSX;
