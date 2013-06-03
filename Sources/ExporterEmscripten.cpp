@@ -7,6 +7,27 @@
 
 using namespace kake;
 
+namespace {
+	void createDirectory(Path dir) {
+		if (!Files::exists(dir)) Files::createDirectories(dir);
+	}
+
+	void copyDirectory(Path from, Path to, std::vector<std::string>& assets) {
+		createDirectory(to);
+		for (auto path : Files::newDirectoryStream(from)) {
+			if (Files::isDirectory(path)) {
+				copyDirectory(path, to.resolve(from.relativize(path)), assets);
+			}
+			else {
+                Path aim = to.resolve(from.relativize(path));
+                assets.push_back(Paths::get("build").relativize(aim).toString());
+				Files::copy(path, aim, true);
+
+			}
+		}
+	}
+}
+
 void ExporterEmscripten::execute(std::string exe) {
 	/*try {
 		Process p = Runtime.getRuntime().exec(exe);
@@ -41,6 +62,8 @@ void ExporterEmscripten::link(std::vector<std::string> files, Path output) {
 void ExporterEmscripten::exportSolution(Solution* solution, Path directory, Platform platform) {
 	Project* project = solution->getProjects()[0];
     Files::createDirectories(directory.resolve("build"));
+    std::vector<std::string> assets;
+    copyDirectory(directory.resolve(project->getDebugDir()), directory.resolve("build"), assets);
 
 	defines = "";
 	for (std::string def : project->getDefines()) defines += "-D" + def + " ";
@@ -59,8 +82,12 @@ void ExporterEmscripten::exportSolution(Solution* solution, Path directory, Plat
         oname = replace(oname, "../", "");
         oline += " " + oname;
     }
+    std::string assetline;
+    for (auto asset : assets) {
+        assetline += " --preload-file " + asset;
+    }
     p(std::string("kore.html:") + oline);
-        p(std::string("$(CC) ") + oline + " -o kore.html --preload-file shader.frag --preload-file shader.vert", 1);
+        p(std::string("$(CC) ") + oline + " -o kore.html" + assetline, 1);
     p();
 
     for (std::string filename : project->getFiles()) {
