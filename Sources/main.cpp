@@ -50,8 +50,8 @@ namespace {
 			return "Xbox 360";
 		case Linux:
 			return "Linux";
-        case HTML5:
-            return "HTML5";
+		case HTML5:
+			return "HTML5";
 		default:
 			return "unknown";
 		}
@@ -85,8 +85,8 @@ namespace {
 				return "d3d9";
 			case Linux:
 				return "glsl";
-            case HTML5:
-                return "essl";
+			case HTML5:
+				return "essl";
 			default:
 				return "unknown";
 		}
@@ -144,6 +144,8 @@ namespace {
 		std::cout << ".";
 		solution->flatten();
 		std::cout << ".";
+
+		if (!Files::exists(directory.resolve("build"))) Files::createDirectories(directory.resolve("build"));
 
 		Project* project = solution->getProjects()[0];
 		std::vector<std::string> files = project->getFiles();
