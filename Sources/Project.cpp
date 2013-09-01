@@ -2,7 +2,11 @@
 #include "Files.h"
 #include "Solution.h"
 #include "String.h"
+#ifdef __GNUC__
+#include <boost/regex.hpp>
+#else
 #include <regex>
+#endif
 
 using namespace kake;
 
@@ -24,7 +28,7 @@ void Project::flatten() {
 		//if (subbasedir.startsWith("./")) subbasedir = subbasedir.substring(2);
 		//if (subbasedir.startsWith(basedir)) subbasedir = subbasedir.substring(basedir.length());
 		if (subbasedir.startsWith(basedir)) subbasedir = basedir.relativize(subbasedir);
-			
+
 		for (std::string define : sub->defines) if (!contains(defines, define)) defines.push_back(define);
 		for (std::string file : sub->files) files.push_back(stringify(subbasedir.resolve(file)));
 		for (std::string include : sub->includeDirs) if (!contains(includeDirs, stringify(subbasedir.resolve(include)))) includeDirs.push_back(stringify(subbasedir.resolve(include)));
@@ -58,8 +62,13 @@ UUID Project::getUuid() {
 
 bool Project::matches(std::string text, std::string pattern) {
 	std::string regexstring = replace(replace(replace(replace(pattern, '.', "\\."), "**", ".?"), '*', "[^/]*"), '?', '*');
+#ifdef __GNUC__
+    boost::regex regex(regexstring);
+	return boost::regex_match(text.begin(), text.end(), regex);
+#else
 	std::regex regex(regexstring);
 	return std::regex_match(text.begin(), text.end(), regex);
+#endif
 }
 
 bool Project::matchesAllSubdirs(Path dir, std::string pattern) {

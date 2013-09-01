@@ -12,7 +12,6 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
-					<Add option="-std=c++0x" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -34,6 +33,10 @@
 			<Add option="-Wall" />
 			<Add option="-DSYS_LINUX" />
 		</Compiler>
+		<Linker>
+			<Add option="-static -lboost_regex" />
+			<Add option="-pthread" />
+		</Linker>
 		<Unit filename="../Sources/Ball.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
