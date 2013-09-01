@@ -47,7 +47,7 @@ void ExporterCodeBlocks::exportSolution(Solution* solution, Path directory, Plat
 			p("<Compiler>", 2);
 				p("<Add option=\"-Wall\" />", 3);
 				for (std::string def : project->getDefines()) {
-					p("<Add option=\"-D" + def + "\" />", 3);
+					p("<Add option=\"-D" + replace(def, "\"", "\\\"") + "\" />", 3);
 				}
 				for (std::string inc : project->getIncludeDirs()) {
 					p("<Add directory=\"../" + inc + "\" />", 3);
@@ -58,6 +58,7 @@ void ExporterCodeBlocks::exportSolution(Solution* solution, Path directory, Plat
 				p("<Add library=\"GL\" />", 3);
 				p("<Add library=\"X11\" />", 3);
 				p("<Add library=\"asound\" />", 3);
+				p("<Add library=\"dl\" />", 3);
 			p("</Linker>", 2);
 			for (std::string file : project->getFiles()) {
 				if (endsWith(file, ".c") || endsWith(file, ".cpp")) {
