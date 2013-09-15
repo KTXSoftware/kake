@@ -19,8 +19,8 @@ namespace {
 				copyDirectory(path, to.resolve(from.relativize(path)), assets);
 			}
 			else {
-                Path aim = to.resolve(from.relativize(path));
-                assets.push_back(Paths::get("build").relativize(aim).toString());
+				Path aim = to.resolve(from.relativize(path));
+				assets.push_back(Paths::get("build").relativize(aim).toString());
 				Files::copy(path, aim, true);
 
 			}
@@ -61,9 +61,9 @@ void ExporterEmscripten::link(std::vector<std::string> files, Path output) {
 
 void ExporterEmscripten::exportSolution(Solution* solution, Path directory, Platform platform) {
 	Project* project = solution->getProjects()[0];
-    Files::createDirectories(directory.resolve("build"));
-    std::vector<std::string> assets;
-    copyDirectory(directory.resolve(project->getDebugDir()), directory.resolve("build"), assets);
+	Files::createDirectories(directory.resolve("build"));
+	std::vector<std::string> assets;
+	copyDirectory(directory.resolve(project->getDebugDir()), directory.resolve("build"), assets);
 
 	defines = "";
 	for (std::string def : project->getDefines()) defines += "-D" + def + " ";
@@ -72,42 +72,42 @@ void ExporterEmscripten::exportSolution(Solution* solution, Path directory, Plat
 
 	writeFile(directory.resolve(Paths::get("build", "makefile")));
 
-    //p("CC = ~/Projekte/emscripten/emcc");
-    p();
-    std::string oline;
-    for (std::string filename : project->getFiles()) {
-        if (!endsWith(filename, ".cpp") && !endsWith(filename, ".c")) continue;
-        int lastpoint = filename.find_last_of('.');
-        std::string oname = filename.substr(0, lastpoint) + ".o";
-        oname = replace(oname, "../", "");
-        oline += " " + oname;
-    }
-    std::string assetline;
-    for (auto asset : assets) {
-        assetline += " --preload-file " + asset;
-    }
-    p(std::string("kore.html:") + oline);
-        p(std::string("$(CC) ") + oline + " -o kore.html" + assetline, 1);
-    p();
+	//p("CC = ~/Projekte/emscripten/emcc");
+	p();
+	std::string oline;
+	for (std::string filename : project->getFiles()) {
+		if (!endsWith(filename, ".cpp") && !endsWith(filename, ".c")) continue;
+		int lastpoint = filename.find_last_of('.');
+		std::string oname = filename.substr(0, lastpoint) + ".o";
+		oname = replace(oname, "../", "");
+		oline += " " + oname;
+	}
+	std::string assetline;
+	for (auto asset : assets) {
+		assetline += " --preload-file " + asset;
+	}
+	p(std::string("kore.html:") + oline);
+		p(std::string("$(CC) ") + oline + " -o kore.html" + assetline, 1);
+	p();
 
-    for (std::string filename : project->getFiles()) {
-        if (!endsWith(filename, ".cpp") && !endsWith(filename, ".c")) continue;
-        Path builddir = directory.resolve("build");
-        std::vector<std::string> dirs = split(filename, '/');
-        std::string name;
-        for (int i = 0; i < (int)dirs.size() - 1; ++i) {
-            std::string s = dirs[i];
-            if (s == "" || s == "..") continue;
-            name += s + "/";
-            builddir = builddir.resolve(s);
-            if (!Files::exists(builddir)) Files::createDirectories(builddir);
-        }
-        int lastpoint = filename.find_last_of('.');
-        std::string oname = filename.substr(0, lastpoint) + ".o";
-        oname = replace(oname, "../", "");
-        p(oname + ": ../" + filename);
-            p(std::string("$(CC) -c ../") + filename + " " + includes + " " + defines + " -o " + oname, 1);
-    }
+	for (std::string filename : project->getFiles()) {
+		if (!endsWith(filename, ".cpp") && !endsWith(filename, ".c")) continue;
+		Path builddir = directory.resolve("build");
+		std::vector<std::string> dirs = split(filename, '/');
+		std::string name;
+		for (int i = 0; i < (int)dirs.size() - 1; ++i) {
+			std::string s = dirs[i];
+			if (s == "" || s == "..") continue;
+			name += s + "/";
+			builddir = builddir.resolve(s);
+			if (!Files::exists(builddir)) Files::createDirectories(builddir);
+		}
+		int lastpoint = filename.find_last_of('.');
+		std::string oname = filename.substr(0, lastpoint) + ".o";
+		oname = replace(oname, "../", "");
+		p(oname + ": ../" + filename);
+			p(std::string("$(CC) -c ../") + filename + " " + includes + " " + defines + " -o " + oname, 1);
+	}
 
 	closeFile();
 
