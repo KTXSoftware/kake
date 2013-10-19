@@ -2,6 +2,7 @@
 #include "Files.h"
 #include "Solution.h"
 #include "String.h"
+#include <set>
 #ifdef __GNUC__
 #include <boost/regex.hpp>
 #else
@@ -82,14 +83,26 @@ std::string Project::stringify(Path path) {
 	return replace(path.toString(), '\\', '/');
 }
 
+namespace {
+	bool isAbsolute(std::string path) {
+		return (path.size() > 0 && path[0] == '/') || (path.size() > 1 && path[1] == ':');
+	}
+}
+
 void Project::searchFiles(Path current) {
 	for (Path file : Files::newDirectoryStream(current)) {
 		if (Files::isDirectory(file)) continue;
-		file = basedir.relativize(file);
+		//if (!current.isAbsolute())
+			file = basedir.relativize(file);
 		for (std::string exclude : excludes) {
 			if (matches(stringify(file), exclude)) goto nextfile;
 		}
 		for (std::string include : includes) {
+			if (isAbsolute(include)) {
+				Path inc = Paths::get(include);
+				inc = basedir.relativize(inc);
+				include = inc.path;
+			}
 			if (matches(stringify(file), include)) {
 				files.push_back(stringify(file));
 			}
@@ -111,6 +124,14 @@ void Project::searchFiles(Path current) {
 void Project::searchFiles() {
 	for (Project* sub : subProjects) sub->searchFiles();
 	searchFiles(basedir);
+	//std::set<std::string> starts;
+	//for (std::string include : includes) {
+	//	if (!isAbsolute(include)) continue;
+	//	std::string start = include.substr(0, firstIndexOf(include, '*'));
+	//	if (starts.count(start) > 0) continue;
+	//	starts.insert(start);
+	//	searchFiles(Paths::get(start));
+	//}
 }
 
 void Project::addFile(std::string file) {

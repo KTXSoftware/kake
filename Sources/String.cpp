@@ -45,6 +45,14 @@ std::string toUpperCase(std::string string) {
 	return value;
 }
 
+std::string toLowerCase(std::string string) {
+	std::string value = string;
+	for (unsigned i = 0; i < string.size(); ++i) {
+		if (string[i] >= 'A' && string[i] <= 'Z') value[i] = (int)'a' + (int)string[i] - (int)'A';
+	}
+	return value;
+}
+
 bool contains(std::string a, char b) {
 	for (unsigned i = 0; i < a.size(); ++i) {
 		if (a[i] == b) return true;
@@ -57,6 +65,13 @@ bool contains(std::string a, std::string b) {
 		if (a.substr(i, b.size()) == b) return true;
 	}
 	return false;
+}
+
+int firstIndexOf(std::string a, char b) {
+	for (unsigned i = 0; i < a.size(); ++i) {
+		if (a[i] == b) return i;
+	}
+	return -1;
 }
 
 int lastIndexOf(std::string a, char b) {

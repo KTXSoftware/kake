@@ -10,6 +10,7 @@ namespace kake {
 		Path toAbsolutePath();
 		bool startsWith(Path other);
 		Path relativize(Path other);
+		bool isAbsolute();
 
 		std::string path;
 	};

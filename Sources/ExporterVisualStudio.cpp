@@ -33,7 +33,7 @@ void ExporterVisualStudio::exportUserFile(Path from, Path to, Project* project, 
 	p("<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
 	p("<PropertyGroup>", 1);
 	if (platform == Platform::Windows) {
-		p("<LocalDebuggerWorkingDirectory>..\\" + replace(from.resolve(Paths::get(project->getDebugDir())).toAbsolutePath().toString(), '/', '\\') + "</LocalDebuggerWorkingDirectory>", 2);
+		p("<LocalDebuggerWorkingDirectory>" + replace(from.resolve(Paths::get(project->getDebugDir())).toAbsolutePath().toString(), '/', '\\') + "</LocalDebuggerWorkingDirectory>", 2);
 		p("<DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>", 2);
 		//java.io.File baseDir = new File(project.getBasedir());
 		//p("<LocalDebuggerCommandArguments>\"SOURCEDIR=" + baseDir.getAbsolutePath() + "\" \"KTSOURCEDIR=" + baseDir.getAbsolutePath() + "\\Kt\"</LocalDebuggerCommandArguments>", 2);
@@ -730,7 +730,7 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				stdafx = file;
 				continue;
 			}
-			std::string name = file;
+			std::string name = toLowerCase(file);
 			if (contains(name, '/')) name = name.substr(lastIndexOf(name, '/') + 1);
 			name = name.substr(0, lastIndexOf(name, '.'));
 			if (objects.count(name) == 0) {

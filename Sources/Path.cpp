@@ -37,6 +37,8 @@ Path Path::relativize(Path other) {
 }
 
 Path Path::resolve(std::string subpath) {
+	Path sub = Paths::get(subpath);
+	if (sub.isAbsolute()) return sub;
 	Path path;
 	if (subpath == ".") path.path = this->path;
 	else path.path = concat(this->path, subpath);
@@ -44,6 +46,7 @@ Path Path::resolve(std::string subpath) {
 }
 
 Path Path::resolve(Path subpath) {
+	if (subpath.isAbsolute()) return subpath;
 	Path path;
 	if (subpath.path == ".") path.path = this->path;
 	else path.path = concat(this->path, subpath.path);
@@ -53,6 +56,10 @@ Path Path::resolve(Path subpath) {
 std::string Path::toString() {
 	if (path[0] == '.' && path[1] == '/') return path.substr(2);
 	else return path;
+}
+
+bool Path::isAbsolute() {
+	return (path.size() > 0 && path[0] == '/') || (path.size() > 1 && path[1] == ':');
 }
 
 Path Paths::get(std::string a) {
