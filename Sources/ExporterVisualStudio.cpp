@@ -8,6 +8,7 @@
 #include "Solution.h"
 #include "String.h"
 #include <algorithm>
+#include <set>
 #include <stdexcept>
 
 namespace {
@@ -23,7 +24,7 @@ using namespace kake;
 
 extern Path koreDir;
 
-void ExporterVisualStudio::exportUserFile(Path to, Project* project, Platform platform) {
+void ExporterVisualStudio::exportUserFile(Path from, Path to, Project* project, Platform platform) {
 	if (project->getDebugDir() == "") return;
 
 	writeFile(to.resolve(project->getName() + ".vcxproj.user"));
@@ -32,13 +33,13 @@ void ExporterVisualStudio::exportUserFile(Path to, Project* project, Platform pl
 	p("<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
 	p("<PropertyGroup>", 1);
 	if (platform == Platform::Windows) {
-		p("<LocalDebuggerWorkingDirectory>..\\" + replace(project->getDebugDir(), '/', '\\') + "</LocalDebuggerWorkingDirectory>", 2);
+		p("<LocalDebuggerWorkingDirectory>..\\" + replace(from.resolve(Paths::get(project->getDebugDir())).toAbsolutePath().toString(), '/', '\\') + "</LocalDebuggerWorkingDirectory>", 2);
 		p("<DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>", 2);
 		//java.io.File baseDir = new File(project.getBasedir());
 		//p("<LocalDebuggerCommandArguments>\"SOURCEDIR=" + baseDir.getAbsolutePath() + "\" \"KTSOURCEDIR=" + baseDir.getAbsolutePath() + "\\Kt\"</LocalDebuggerCommandArguments>", 2);
 	}
 	else if (platform == Platform::PlayStation3) {
-		p("<LocalDebuggerFileServingDirectory>" + Paths::get(replace(project->getDebugDir(), '/', '\\')).toAbsolutePath().toString() + "</LocalDebuggerFileServingDirectory>", 2);
+		p("<LocalDebuggerFileServingDirectory>" + replace(from.resolve(Paths::get(project->getDebugDir())).toAbsolutePath().toString(), '/', '\\') + "</LocalDebuggerFileServingDirectory>", 2);
 		p("<DebuggerFlavor>PS3Debugger</DebuggerFlavor>", 2);
 	}
 	p("</PropertyGroup>", 1);
@@ -136,7 +137,7 @@ void ExporterVisualStudio::exportSolution(Solution* solution, Path from, Path to
 	for (Project* project : solution->getProjects()) {
 		exportProject(from, to, project, platform, solution->isCmd());
 		exportFilters(from, to, project, platform);
-		exportUserFile(to, project, platform);
+		exportUserFile(from, to, project, platform);
 		if (platform == Platform::WindowsRT) {
 			exportManifest(to, project);
 			Ball::the()->exportTo(to.resolve("Logo.png"), 150, 150, white, from);
@@ -272,7 +273,7 @@ void ExporterVisualStudio::exportFilters(Path from, Path to, Project* project, P
 			std::string dir = file.substr(0, lastIndexOf(file, '/'));
 			if (dir != lastdir) lastdir = dir;
 			if (endsWith(file, ".h")) {
-				p(std::string("<ClInclude Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<ClInclude Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<Filter>" + replace(dir, '/', '\\') + "</Filter>", 3);
 				p("</ClInclude>", 2);
 			}
@@ -287,7 +288,7 @@ void ExporterVisualStudio::exportFilters(Path from, Path to, Project* project, P
 			std::string dir = file.substr(0, lastIndexOf(file, '/'));
 			if (dir != lastdir) lastdir = dir;
 			if (endsWith(file, ".cpp") || endsWith(file, ".c") || endsWith(file, "cc")) {
-				p(std::string("<ClCompile Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<ClCompile Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<Filter>" + replace(dir, '/', '\\') + "</Filter>", 3);
 				p("</ClCompile>", 2);
 			}
@@ -302,7 +303,7 @@ void ExporterVisualStudio::exportFilters(Path from, Path to, Project* project, P
 			std::string dir = file.substr(0, lastIndexOf(file, '/'));
 			if (dir != lastdir) lastdir = dir;
 			if (endsWith(file, ".cg") || endsWith(file, ".hlsl")) {
-				p(std::string("<CustomBuild Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<CustomBuild Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<Filter>" + replace(dir, '/', '\\') + "</Filter>", 3);
 				p("</CustomBuild>", 2);
 			}
@@ -317,7 +318,7 @@ void ExporterVisualStudio::exportFilters(Path from, Path to, Project* project, P
 			std::string dir = file.substr(0, lastIndexOf(file, '/'));
 			if (dir != lastdir) lastdir = dir;
 			if (endsWith(file, ".asm")) {
-				p(std::string("<CustomBuild Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<CustomBuild Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<Filter>" + replace(dir, '/', '\\') + "</Filter>", 3);
 				p("</CustomBuild>", 2);
 			}
@@ -332,7 +333,7 @@ void ExporterVisualStudio::exportFilters(Path from, Path to, Project* project, P
 			if (contains(file, "/")) {
 				std::string dir = file.substr(0, lastIndexOf(file, '/'));
 				if (dir != lastdir) lastdir = dir;
-				p(std::string("<None Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<None Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<Filter>" + replace(dir, '/', '\\') + "</Filter>", 3);
 				p("</None>", 2);
 			}
@@ -546,23 +547,22 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 
 	std::string defines = "";
 	for (std::string define : project->getDefines()) defines += define + ";";
-	std::string preinc = "../";
 
 	std::string incstring = "";
-	for (std::string inc : project->getIncludeDirs()) incstring += preinc + inc + ";";
+	for (std::string inc : project->getIncludeDirs()) incstring += from.resolve(inc).toAbsolutePath().toString() + ";";
 	if (incstring.length() > 0) incstring = incstring.substr(0, incstring.length() - 1);
 
 	std::string debuglibs = "";
 	for (Project* proj : project->getSubProjects()) debuglibs += "Debug\\" + proj->getName() + ".lib;";
 	for (std::string lib : project->getLibs()) {
-		if (contains(lib, '/')) debuglibs += "../" + lib + ".lib;";
+		if (contains(lib, '/')) debuglibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 		else debuglibs += lib + ".lib;";
 	}
 
 	std::string releaselibs = "";
 	for (Project* proj : project->getSubProjects()) releaselibs += "Release\\" + proj->getName() + ".lib;";
 	for (std::string lib : project->getLibs()) {
-		if (contains(lib, '/')) releaselibs += "../" + lib + ".lib;";
+		if (contains(lib, '/')) releaselibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 		else releaselibs += lib + ".lib;";
 	}
 
@@ -599,13 +599,11 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>", 3);
 				p("<MultiProcessorCompilation>true</MultiProcessorCompilation>", 3);
 				p("<MinimalRebuild>false</MinimalRebuild>", 3);
-				p("<ObjectFileName>$(IntDir)/build/%(RelativeDir)</ObjectFileName>", 3);
 			}
 			else if (platform == Platform::PlayStation3) {
 				p("<UserPreprocessorDefinitions>" + defines + "_DEBUG;__CELL_ASSERT__;%(UserPreprocessorDefinitions);</UserPreprocessorDefinitions>", 3);
 				p("<GenerateDebugInformation>true</GenerateDebugInformation>", 3);
 				p("<PreprocessorDefinitions>%(UserPreprocessorDefinitions);$(BuiltInDefines);__INTELLISENSE__;%(PreprocessorDefinitions);</PreprocessorDefinitions>", 3);
-				p("<ObjectFileName>$(IntDir)/build/%(RelativeDir)</ObjectFileName>", 3);
 			}
 			p("</ClCompile>", 2);
 			if (platform == Platform::Windows) {
@@ -615,15 +613,15 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<GenerateDebugInformation>true</GenerateDebugInformation>", 3);
 				std::string libs = debuglibs;
 				for (std::string lib : project->getLibsFor("debug_" + system)) {
-					if (contains(lib, '/')) libs += "../" + lib + ".lib;";
+					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor(system)) {
-					if (contains(lib, '/')) libs += "../" + lib + ".lib;";
+					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor("debug")) {
-					if (contains(lib, '/')) libs += "../" + lib + ".lib;";
+					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				p("<AdditionalDependencies>" + libs + "kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>", 3);
@@ -649,13 +647,11 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<RuntimeLibrary>MultiThreaded</RuntimeLibrary>", 3);
 				p("<MultiProcessorCompilation>true</MultiProcessorCompilation>", 3);
 				p("<MinimalRebuild>false</MinimalRebuild>", 3);
-				p("<ObjectFileName>$(IntDir)/%(RelativeDir)/</ObjectFileName>", 3);
 			}
 			else if (platform == Platform::PlayStation3) {
 				p("<UserPreprocessorDefinitions>" + defines + "NDEBUG;%(UserPreprocessorDefinitions);</UserPreprocessorDefinitions>", 3);
 				p("<OptimizationLevel>Level2</OptimizationLevel>", 3);
 				p("<PreprocessorDefinitions>%(UserPreprocessorDefinitions);$(BuiltInDefines);__INTELLISENSE__;%(PreprocessorDefinitions);</PreprocessorDefinitions>");
-				p("<ObjectFileName>$(IntDir)/%(RelativeDir)</ObjectFileName>", 3);
 			}
 
 			p("</ClCompile>", 2);
@@ -668,15 +664,15 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<OptimizeReferences>true</OptimizeReferences>", 3);
 				std::string libs = releaselibs;
 				for (std::string lib : project->getLibsFor("release_" + system)) {
-					if (contains(lib, '/')) libs += "../" + lib + ".lib;";
+					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor(system)) {
-					if (contains(lib, '/')) libs += "../" + lib + ".lib;";
+					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor("release")) {
-					if (contains(lib, '/')) libs += "../" + lib + ".lib;";
+					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				p("<AdditionalDependencies>" + libs + "kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>", 3);
@@ -693,7 +689,7 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 
 	p("<ItemGroup>", 1);
 	for (std::string file : project->getFiles()) {
-		if (endsWith(file, ".h")) p(std::string("<ClInclude Include=\"") + "../" + file + "\" />", 2);
+		if (endsWith(file, ".h")) p(std::string("<ClInclude Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\" />", 2);
 	}
 	p("</ItemGroup>", 1);
 
@@ -726,14 +722,30 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 	}
 
 	p("<ItemGroup>", 1);
+	std::set<std::string> objects;
 	std::string stdafx;
 	for (std::string file : project->getFiles()) {
 		if (endsWith(file, ".cpp") || endsWith(file, ".c") || endsWith(file, "cc")) {
-			if (Options::usesPrecompiledHeaders() && endsWith(file, "stdafx.cpp")) {
+			if (Options::usesPrecompiledHeaders() && (endsWith(file, "stdafx.cpp") || endsWith(file, "pch.cpp"))) {
 				stdafx = file;
 				continue;
 			}
-			p(std::string("<ClCompile Include=\"") + "../" + file + "\" />", 2);
+			std::string name = file;
+			if (contains(name, '/')) name = name.substr(lastIndexOf(name, '/') + 1);
+			name = name.substr(0, lastIndexOf(name, '.'));
+			if (objects.count(name) == 0) {
+				p(std::string("<ClCompile Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\" />", 2);
+				objects.insert(name);
+			}
+			else {
+				while (objects.count(name) > 0) {
+					name = name + "_";
+				}
+				p(std::string("<ClCompile Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
+				p(std::string("<ObjectFileName>$(IntDir)\\") + name + ".obj</ObjectFileName>", 3);
+				p("</ClCompile>", 2);
+				objects.insert(name);
+			}
 		}
 	}
 	if (Options::usesPrecompiledHeaders()) {
@@ -749,14 +761,14 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 		p("<ItemGroup>", 1);
 		for (std::string file : project->getFiles()) {
 			if (endsWith(file, ".vp.cg")) {
-				p(std::string("<CustomBuild Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<CustomBuild Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<FileType>Document</FileType>", 2);
 				p("<Command>$(SCE_PS3_ROOT)\\host-win32\\Cg\\bin\\sce-cgc -quiet -profile sce_vp_rsx -o \"%(Filename).vpo\" \"%(FullPath)\"\n$(SCE_PS3_ROOT)\\host-win32\\ppu\\bin\\ppu-lv2-objcopy  -I binary -O elf64-powerpc-celloslv2 -B powerpc \"%(Filename).vpo\" \"%(Filename).ppu.o\"</Command>", 2);
 				p("<Outputs>%(Filename).vpo;%(Filename).ppu.o;%(Outputs)</Outputs>", 2);
 				p("</CustomBuild>", 2);
 			}
 			else if (endsWith(file, ".fp.cg")) {
-				p(std::string("<CustomBuild Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<CustomBuild Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<FileType>Document</FileType>", 2);
 				p("<Command>$(SCE_PS3_ROOT)\\host-win32\\Cg\\bin\\sce-cgc -quiet -profile sce_fp_rsx -o \"%(Filename).fpo\" \"%(FullPath)\"\n$(SCE_PS3_ROOT)\\host-win32\\ppu\\bin\\ppu-lv2-objcopy  -I binary -O elf64-powerpc-celloslv2 -B powerpc \"%(Filename).fpo\" \"%(Filename).ppu.o\"</Command>", 2);
 				p("<Outputs>%(Filename).fpo;%(Filename).ppu.o;%(Outputs)</Outputs>", 2);
@@ -770,10 +782,10 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 		p("<ItemGroup>", 1);
 		for (std::string file : project->getFiles()) {
 			if (endsWith(file, ".cg")) {
-				p(std::string("<CustomBuild Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<CustomBuild Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<FileType>Document</FileType>", 2);
-				p(std::string("<Command>..\\") + "Kt\\Tools\\ShaderCompiler.exe " + ((Options::getGraphicsApi() == OpenGL || Options::getGraphicsApi() == OpenGL2) ? "glsl" : "d3d9") + " \"%(FullPath)\" ..\\" + replace(project->getDebugDir(), '/', '\\') + "\\Shaders\\%(Filename)</Command>", 2);
-				p("<Outputs>..\\" + replace(project->getDebugDir(), '/', '\\') + "\\Shaders\\%(Filename)" + ((Options::getGraphicsApi() == OpenGL || Options::getGraphicsApi() == OpenGL2) ? ".glsl" : ".d3d9") + ";%(Outputs)</Outputs>", 2);
+				p(std::string("<Command>..\\") + "Kt\\Tools\\ShaderCompiler.exe " + ((Options::getGraphicsApi() == OpenGL || Options::getGraphicsApi() == OpenGL2) ? "glsl" : "d3d9") + " \"%(FullPath)\" " + replace(from.resolve(project->getDebugDir()).toAbsolutePath().toString(), '/', '\\') + "\\Shaders\\%(Filename)</Command>", 2);
+				p("<Outputs>" + replace(from.resolve(project->getDebugDir()).toAbsolutePath().toString(), '/', '\\') + "\\Shaders\\%(Filename)" + ((Options::getGraphicsApi() == OpenGL || Options::getGraphicsApi() == OpenGL2) ? ".glsl" : ".d3d9") + ";%(Outputs)</Outputs>", 2);
 				p("</CustomBuild>", 2);
 			}
 		}
@@ -781,10 +793,10 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 		p("<ItemGroup>", 1);
 		for (std::string file : project->getFiles()) {
 			if (koreDir.toString() != "" && endsWith(file, ".glsl")) {
-				p(std::string("<CustomBuild Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<CustomBuild Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<FileType>Document</FileType>", 2);
-				p(std::string("<Command>..\\") + replace(koreDir.toString(), '/', '\\') + "\\Tools\\kfx\\kfx.exe " + ((Options::getGraphicsApi() == OpenGL || Options::getGraphicsApi() == OpenGL2) ? "glsl" : (Options::getGraphicsApi() == Direct3D11 ? "d3d11" : "d3d9")) + " \"%(FullPath)\" ..\\" + replace(project->getDebugDir(), '/', '\\') + "\\%(Filename) ..\\build</Command>", 2);
-				p("<Outputs>..\\" + replace(project->getDebugDir(), '/', '\\') + "\\%(Filename);%(Outputs)</Outputs>", 2);
+				p(std::string("<Command>") + replace(from.resolve(koreDir).toAbsolutePath().toString(), '/', '\\') + "\\Tools\\kfx\\kfx.exe " + ((Options::getGraphicsApi() == OpenGL || Options::getGraphicsApi() == OpenGL2) ? "glsl" : (Options::getGraphicsApi() == Direct3D11 ? "d3d11" : "d3d9")) + " \"%(FullPath)\" ..\\" + replace(project->getDebugDir(), '/', '\\') + "\\%(Filename) ..\\build</Command>", 2);
+				p("<Outputs>" + replace(from.resolve(project->getDebugDir()).toAbsolutePath().toString(), '/', '\\') + "\\%(Filename);%(Outputs)</Outputs>", 2);
 				p("<Message>Compiling %(FullPath)</Message>", 2);
 				p("</CustomBuild>", 2);
 			}
@@ -793,9 +805,9 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 		p("<ItemGroup>", 1);
 		for (std::string file : project->getFiles()) {
 			if (koreDir.toString() != "" && endsWith(file, ".asm")) {
-				p(std::string("<CustomBuild Include=\"") + "../" + file + "\">", 2);
+				p(std::string("<CustomBuild Include=\"") + from.resolve(file).toAbsolutePath().toString() + "\">", 2);
 				p("<FileType>Document</FileType>", 2);
-				p(std::string("<Command>..\\") + replace(koreDir.toString(), '/', '\\') + "\\Tools\\yasm-1.2.0-win32.exe -Xvc -f Win32 -g cv8 -o $(OutDir)\\%(Filename).obj -I ..\\Kt\\WebM\\src -I ..\\Kt\\WebM\\build -rnasm -pnasm \"%(FullPath)\"</Command>", 2);
+				p(std::string("<Command>") + replace(from.resolve(koreDir).toAbsolutePath().toString(), '/', '\\') + "\\Tools\\yasm-1.2.0-win32.exe -Xvc -f Win32 -g cv8 -o $(OutDir)\\%(Filename).obj -I ..\\Kt\\WebM\\src -I ..\\Kt\\WebM\\build -rnasm -pnasm \"%(FullPath)\"</Command>", 2);
 				p("<Outputs>$(OutDir)\\%(Filename).obj</Outputs>", 2);
 				p("<Message>Compiling %(FullPath)</Message>", 2);
 				p("</CustomBuild>", 2);

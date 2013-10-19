@@ -10,7 +10,7 @@ namespace kake {
 
 	class ExporterVisualStudio : public Exporter {
 	public:
-		void exportUserFile(Path directory, Project* project, Platform platform);
+		void exportUserFile(Path from, Path to, Project* project, Platform platform);
 		void writeProjectDeclarations(Project* project, UUID solutionUuid);
 		std::vector<std::string> getConfigs(Platform platform);
 		std::vector<std::string> getSystems(Platform platform);
