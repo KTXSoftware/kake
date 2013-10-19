@@ -6,12 +6,10 @@
 
 using namespace kake;
 
-void ExporterCodeBlocks::exportSolution(Solution* solution, Path directory, Platform platform) {
+void ExporterCodeBlocks::exportSolution(Solution* solution, Path from, Path to, Platform platform) {
 	Project* project = solution->getProjects()[0];
 
-	Files::createDirectories(directory.resolve("build"));
-
-	writeFile(directory.resolve(Paths::get("build", project->getName() + ".cbp")));
+	writeFile(to.resolve(project->getName() + ".cbp"));
 	p("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\" ?>");
 	p("<CodeBlocks_project_file>");
 		p("<FileVersion major=\"1\" minor=\"6\" />", 1);

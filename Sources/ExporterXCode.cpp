@@ -98,11 +98,11 @@ Directory* ExporterXCode::addDirectory(std::string dirname, std::vector<Director
 	return dir;
 }
 
-void ExporterXCode::exportWorkspace(Path directory, Solution* solution) {
-	Path dir = directory.resolve(Paths::get("build", solution->getName() + ".xcodeproj", "project.xcworkspace"));
+void ExporterXCode::exportWorkspace(Path to, Solution* solution) {
+	Path dir = to.resolve(Paths::get(solution->getName() + ".xcodeproj", "project.xcworkspace"));
 	if (!Files::exists(dir)) Files::createDirectories(dir);
 
-	writeFile(directory.resolve(Paths::get("build", solution->getName() + ".xcodeproj", "project.xcworkspace", "contents.xcworkspacedata")));
+	writeFile(to.resolve(Paths::get(solution->getName() + ".xcodeproj", "project.xcworkspace", "contents.xcworkspacedata")));
 
 	p("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 	p("<Workspace");
@@ -119,11 +119,11 @@ std::string ExporterXCode::newId() {
 	return toUpperCase(UUID::randomUUID().toString());
 }
 
-void ExporterXCode::exportSolution(Solution* solution, Path directory, Platform platform) {
-	Path xdir = directory.resolve(Paths::get("build", solution->getName() + ".xcodeproj"));
+void ExporterXCode::exportSolution(Solution* solution, Path from, Path to, Platform platform) {
+	Path xdir = to.resolve(solution->getName() + ".xcodeproj");
 	if (!Files::exists(xdir)) Files::createDirectories(xdir);
 
-	exportWorkspace(directory, solution);
+	exportWorkspace(to, solution);
 
 	std::vector<std::string> iosIconNames;
 	iosIconNames.push_back("iPhone.png");
@@ -139,20 +139,20 @@ void ExporterXCode::exportSolution(Solution* solution, Path directory, Platform 
 	iosIconNames.push_back("Default-Landscape@2x~ipad.png");
 
 	if (platform == iOS) {
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "iPhone.png"                   )),   57,   57, transparent, directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "iPhoneRetina.png"             )),  114,  114, transparent, directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "Default.png"                  )),  320,  480, black,       directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "Default@2x.png"               )),  640,  960, black,       directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "Default-568h@2x.png"          )),  640, 1136, black,       directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "iPad.png"                     )),   72,   72, transparent, directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "iPadRetina.png"               )),  144,  144, transparent, directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "Default-Portrait~ipad.png"    )),  768, 1024, black,       directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "Default-Portrait@2x~ipad.png" )), 1536, 2048, black,       directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "Default-Landscape~ipad.png"   )), 1024,  768, black,       directory);
-		Ball::the()->exportTo(directory.resolve(Paths::get("build", "Default-Landscape@2x~ipad.png")), 2048, 1536, black,       directory);
+		Ball::the()->exportTo(to.resolve("iPhone.png"                   ),   57,   57, transparent, from);
+		Ball::the()->exportTo(to.resolve("iPhoneRetina.png"             ),  114,  114, transparent, from);
+		Ball::the()->exportTo(to.resolve("Default.png"                  ),  320,  480, black,       from);
+		Ball::the()->exportTo(to.resolve("Default@2x.png"               ),  640,  960, black,       from);
+		Ball::the()->exportTo(to.resolve("Default-568h@2x.png"          ),  640, 1136, black,       from);
+		Ball::the()->exportTo(to.resolve("iPad.png"                     ),   72,   72, transparent, from);
+		Ball::the()->exportTo(to.resolve("iPadRetina.png"               ),  144,  144, transparent, from);
+		Ball::the()->exportTo(to.resolve("Default-Portrait~ipad.png"    ),  768, 1024, black,       from);
+		Ball::the()->exportTo(to.resolve("Default-Portrait@2x~ipad.png" ), 1536, 2048, black,       from);
+		Ball::the()->exportTo(to.resolve("Default-Landscape~ipad.png"   ), 1024,  768, black,       from);
+		Ball::the()->exportTo(to.resolve("Default-Landscape@2x~ipad.png"), 2048, 1536, black,       from);
 	}
 	else {
-		Ball::the()->exportToMacIcon(directory.resolve(Paths::get("build", "icon.icns")), directory);
+		Ball::the()->exportToMacIcon(to.resolve("icon.icns"), from);
 	}
 
 	Project* project = solution->getProjects()[0];
@@ -203,7 +203,7 @@ void ExporterXCode::exportSolution(Solution* solution, Path directory, Platform 
 		iosIconBuildIds.push_back(newId());
 	}
 
-	writeFile(directory.resolve(Paths::get("build", solution->getName() + ".xcodeproj", "project.pbxproj")));
+	writeFile(to.resolve(Paths::get(solution->getName() + ".xcodeproj", "project.pbxproj")));
 
 	p("// !$*UTF8*$!");
 	p("{");

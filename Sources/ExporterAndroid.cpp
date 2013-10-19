@@ -26,17 +26,15 @@ namespace {
 	}
 }
 	
-void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platform platform) {
+void ExporterAndroid::exportSolution(Solution* solution, Path from, Path to, Platform platform) {
 	Project* project = solution->getProjects()[0];
 	//String libname = solution.getName().toLowerCase().replace(' ', '-');
 		
 	bool nvpack = false; //Configuration.getAndroidDevkit() == AndroidDevkit.nVidia;
+	
+	copyDirectory(from.resolve(project->getDebugDir()), to.resolve("assets"));
 		
-	createDirectory(directory.resolve("build"));
-
-	copyDirectory(directory.resolve(project->getDebugDir()), directory.resolve(Paths::get("build", "assets")));
-		
-	writeFile(directory.resolve(Paths::get("build", ".classpath")));
+	writeFile(to.resolve(".classpath"));
 	p("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 	p("<classpath>");
 		p("<classpathentry kind=\"src\" path=\"Java-Sources\"/>", 1);
@@ -48,7 +46,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 	closeFile();
 		
 	if (nvpack) {
-		writeFile(directory.resolve(Paths::get("build", ".project")));
+		writeFile(to.resolve(".project"));
 		p("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		p("<projectDescription>");
 		p("<name>" + solution->getName() + "</name>", 1);
@@ -157,7 +155,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 			p("<link>", 2);
 					p("<name>Sources</name>", 3);
 					p("<type>2</type>", 3);
-					p("<location>" + replace(directory.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+					p("<location>" + replace(from.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
 				p("</link>", 2);
 				p("<link>", 2);
 					p("<name>Kore</name>", 3);
@@ -184,7 +182,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 		closeFile();
 	}
 	else {
-		writeFile(directory.resolve(Paths::get("build", ".project")));
+		writeFile(to.resolve(".project"));
 		p("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		p("<projectDescription>");
 			p("<name>" + solution->getName() + "</name>", 1);
@@ -285,7 +283,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 				p("<link>", 2);
 					p("<name>Sources</name>", 3);
 					p("<type>2</type>", 3);
-					p("<location>" + replace(directory.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
+					p("<location>" + replace(from.resolve("Sources").toAbsolutePath().toString(), '\\', '/') + "</location>", 3);
 				p("</link>", 2);
 				p("<link>", 2);
 					p("<name>Kore</name>", 3);
@@ -313,7 +311,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 	}
 		
 	if (nvpack) {
-		writeFile(directory.resolve(Paths::get("build", ".cproject")));
+		writeFile(to.resolve(".cproject"));
 		p("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
 		p("<?fileVersion 4.0.0?>");
 
@@ -370,7 +368,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 		closeFile();
 	}
 	else {
-		writeFile(directory.resolve(Paths::get("build", ".cproject")));
+		writeFile(to.resolve(".cproject"));
 		p("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>");
 		p("<?fileVersion 4.0.0?>");
 		p();
@@ -431,7 +429,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 		closeFile();
 	}
 		
-	writeFile(directory.resolve(Paths::get("build", "AndroidManifest.xml")));
+	writeFile(to.resolve("AndroidManifest.xml"));
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	p("<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"");
 		p("package=\"com.ktxsoftware.kore\"", 1);
@@ -453,13 +451,13 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 	p("</manifest>");
 	closeFile();
 		
-	writeFile(directory.resolve(Paths::get("build", "project.properties")));
+	writeFile(to.resolve("project.properties"));
 	p("target=android-8");
 	closeFile();
 		
-	createDirectory(directory.resolve(Paths::get("build", ".settings")));
+	createDirectory(to.resolve(".settings"));
 	if (nvpack) {
-		writeFile(directory.resolve(Paths::get("build", ".settings", "org.eclipse.jdt.core.prefs")));
+		writeFile(to.resolve(Paths::get(".settings", "org.eclipse.jdt.core.prefs")));
 		p("eclipse.preferences.version=1");
 		p("org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled");
 		p("org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6");
@@ -474,7 +472,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 		closeFile();
 	}
 	else {
-		writeFile(directory.resolve(Paths::get("build", ".settings", "org.eclipse.jdt.core.prefs")));
+		writeFile(to.resolve(Paths::get(".settings", "org.eclipse.jdt.core.prefs")));
 		p("eclipse.preferences.version=1");
 		p("org.eclipse.jdt.core.compiler.codegen.targetPlatform=1.6");
 		p("org.eclipse.jdt.core.compiler.compliance=1.6");
@@ -483,7 +481,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 	}
 		
 	if (nvpack) {
-		writeFile(directory.resolve(Paths::get("build", "build.xml")));
+		writeFile(to.resolve("build.xml"));
 		p("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 		p("<project name=\"native_basic\" default=\"help\">");
 			p("<property file=\"local.properties\" />", 1);
@@ -499,16 +497,16 @@ void ExporterAndroid::exportSolution(Solution* solution, Path directory, Platfor
 		closeFile();
 	}
 		
-	createDirectory(directory.resolve(Paths::get("build", "res")));
-	createDirectory(directory.resolve(Paths::get("build", "res", "values")));
-	writeFile(directory.resolve(Paths::get("build", "res", "values", "strings.xml")));
+	createDirectory(to.resolve("res"));
+	createDirectory(to.resolve(Paths::get("res", "values")));
+	writeFile(to.resolve(Paths::get("res", "values", "strings.xml")));
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	p("<resources>");
 	p("<string name=\"app_name\">" + solution->getName() + "</string>", 1);
 	p("</resources>");
 	closeFile();
 		
-	createDirectory(directory.resolve(Paths::get("build", "jni")));
+	createDirectory(to.resolve("jni"));
 		
 	if (nvpack) {
 		/*
@@ -540,7 +538,7 @@ $(call import-module,nv_file)
 $(call import-module,nv_thread) 
 			*/
 	}
-	writeFile(directory.resolve(Paths::get("build", "jni", "Android.mk")));
+	writeFile(to.resolve(Paths::get("jni", "Android.mk")));
 	p("LOCAL_PATH := $(call my-dir)");
 	p();
 	p("include $(CLEAR_VARS)");
@@ -560,8 +558,8 @@ $(call import-module,nv_thread)
 	p("include $(BUILD_SHARED_LIBRARY)");
 	p();
 	closeFile();
-		
-	writeFile(directory.resolve(Paths::get("build", "jni", "Application.mk")));
+	
+	writeFile(to.resolve(Paths::get("jni", "Application.mk")));
 	p("APP_CPPFLAGS += -fexceptions -frtti");
 	p("APP_STL := gnustl_static");
 	//p("APP_ABI := all");

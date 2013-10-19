@@ -23,10 +23,10 @@ using namespace kake;
 
 extern Path koreDir;
 
-void ExporterVisualStudio::exportUserFile(Path directory, Project* project, Platform platform) {
+void ExporterVisualStudio::exportUserFile(Path to, Project* project, Platform platform) {
 	if (project->getDebugDir() == "") return;
 
-	writeFile(directory.resolve(Paths::get("build", project->getName() + ".vcxproj.user")));
+	writeFile(to.resolve(project->getName() + ".vcxproj.user"));
 
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	p("<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
@@ -87,7 +87,7 @@ void ExporterVisualStudio::writeProjectBuilds(Project* project, Platform platfor
 	for (Project* proj : project->getSubProjects()) writeProjectBuilds(proj, platform);
 }
 
-void ExporterVisualStudio::exportSolution(Solution* solution, Path directory, Platform platform) {
+void ExporterVisualStudio::exportSolution(Solution* solution, Path from, Path to, Platform platform) {
 	standardconfs.push_back("Debug");
 	standardconfs.push_back("Release");
 	xboxconfs.push_back("CodeAnalysis");
@@ -104,9 +104,7 @@ void ExporterVisualStudio::exportSolution(Solution* solution, Path directory, Pl
 	windowssystems.push_back("Win32");
 	windowssystems.push_back("x64");
 
-	if (!Files::exists(directory.resolve("build"))) Files::createDirectories(directory.resolve("build"));
-
-	writeFile(directory.resolve(Paths::get("build", solution->getName() + ".sln")));
+	writeFile(to.resolve(solution->getName() + ".sln"));
 
 	if (platform == Platform::WindowsRT || (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2012)) {
 		p("Microsoft Visual Studio Solution File, Format Version 12.00");
@@ -136,25 +134,25 @@ void ExporterVisualStudio::exportSolution(Solution* solution, Path directory, Pl
 	closeFile();
 
 	for (Project* project : solution->getProjects()) {
-		exportProject(directory, project, platform, solution->isCmd());
-		exportFilters(directory, project, platform);
-		exportUserFile(directory, project, platform);
+		exportProject(from, to, project, platform, solution->isCmd());
+		exportFilters(from, to, project, platform);
+		exportUserFile(to, project, platform);
 		if (platform == Platform::WindowsRT) {
-			exportManifest(directory, project);
-			Ball::the()->exportTo(directory.resolve(Paths::get("build", "Logo.png")), 150, 150, white, directory);
-			Ball::the()->exportTo(directory.resolve(Paths::get("build", "SmallLogo.png")), 30, 30, white, directory);
-			Ball::the()->exportTo(directory.resolve(Paths::get("build", "SplashScreen.png")), 620, 300, white, directory);
-			Ball::the()->exportTo(directory.resolve(Paths::get("build", "StoreLogo.png")), 50, 50, white, directory);
+			exportManifest(to, project);
+			Ball::the()->exportTo(to.resolve("Logo.png"), 150, 150, white, from);
+			Ball::the()->exportTo(to.resolve("SmallLogo.png"), 30, 30, white, from);
+			Ball::the()->exportTo(to.resolve("SplashScreen.png"), 620, 300, white, from);
+			Ball::the()->exportTo(to.resolve("StoreLogo.png"), 50, 50, white, from);
 		}
 		else if (platform == Platform::Windows) {
-			exportResourceScript(directory);
-			Ball::the()->exportToWindowsIcon(directory.resolve(Paths::get("build", "icon.ico")), directory);
+			exportResourceScript(to);
+			Ball::the()->exportToWindowsIcon(to.resolve("icon.ico"), from);
 		}
 	}
 }
 
-void ExporterVisualStudio::exportManifest(Path directory, Project* project) {
-	writeFile(directory.resolve(Paths::get("build", "Package.appxmanifest")));
+void ExporterVisualStudio::exportManifest(Path to, Project* project) {
+	writeFile(to.resolve("Package.appxmanifest"));
 
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	p("<Package xmlns=\"http://schemas.microsoft.com/appx/2010/manifest\">");
@@ -188,11 +186,9 @@ void ExporterVisualStudio::exportManifest(Path directory, Project* project) {
 	closeFile();
 }
 
-void ExporterVisualStudio::exportResourceScript(Path directory) {
-	writeFile(directory.resolve(Paths::get("build", "resources.rc")));
-
+void ExporterVisualStudio::exportResourceScript(Path to) {
+	writeFile(to.resolve("resources.rc"));
 	p("107       ICON         \"icon.ico\"");
-
 	closeFile();
 }
 
@@ -205,10 +201,10 @@ void ExporterVisualStudio::exportAssetPathFilter(Path assetPath, std::vector<std
 	}
 }
 
-void ExporterVisualStudio::exportFilters(Path directory, Project* project, Platform platform) {
-	for (Project* proj : project->getSubProjects()) exportFilters(directory, proj, platform);
+void ExporterVisualStudio::exportFilters(Path from, Path to, Project* project, Platform platform) {
+	for (Project* proj : project->getSubProjects()) exportFilters(from, to, proj, platform);
 
-	writeFile(directory.resolve(Paths::get("build", project->getName() + ".vcxproj.filters")));
+	writeFile(to.resolve(project->getName() + ".vcxproj.filters"));
 
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	p("<Project ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
@@ -231,7 +227,7 @@ void ExporterVisualStudio::exportFilters(Path directory, Project* project, Platf
 		}
 	}
 	std::vector<std::string> assets;
-	if (platform == Platform::WindowsRT) exportAssetPathFilter(directory.resolve(project->getDebugDir()), dirs, assets);
+	if (platform == Platform::WindowsRT) exportAssetPathFilter(from.resolve(project->getDebugDir()), dirs, assets);
 
 	p("<ItemGroup>", 1);
 	for (std::string dir : dirs) {
@@ -425,10 +421,10 @@ void ExporterVisualStudio::addItemDefinitionGroup(std::string incstring, std::st
 //	p("</Reference>", 2);
 //}
 
-void ExporterVisualStudio::exportProject(Path directory, Project* project, Platform platform, bool cmd) {
-	for (Project* proj : project->getSubProjects()) exportProject(directory, proj, platform, cmd);
+void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, Platform platform, bool cmd) {
+	for (Project* proj : project->getSubProjects()) exportProject(from, to, proj, platform, cmd);
 
-	writeFile(directory.resolve(Paths::get("build", project->getName() + ".vcxproj")));
+	writeFile(to.resolve(project->getName() + ".vcxproj"));
 
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 	p("<Project DefaultTargets=\"Build\" ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
@@ -725,7 +721,7 @@ void ExporterVisualStudio::exportProject(Path directory, Project* project, Platf
 		p("</ItemGroup>", 1);
 
 		p("<ItemGroup>", 1);
-		exportAssetPath(directory.resolve(project->getDebugDir()));
+		exportAssetPath(from.resolve(project->getDebugDir()));
 		p("</ItemGroup>", 1);
 	}
 

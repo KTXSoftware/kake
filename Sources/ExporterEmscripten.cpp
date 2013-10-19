@@ -59,18 +59,18 @@ void ExporterEmscripten::link(std::vector<std::string> files, Path output) {
 	execute(exe);
 }
 
-void ExporterEmscripten::exportSolution(Solution* solution, Path directory, Platform platform) {
+void ExporterEmscripten::exportSolution(Solution* solution, Path from, Path to, Platform platform) {
 	Project* project = solution->getProjects()[0];
-	Files::createDirectories(directory.resolve("build"));
+
 	std::vector<std::string> assets;
-	copyDirectory(directory.resolve(project->getDebugDir()), directory.resolve("build"), assets);
+	copyDirectory(from.resolve(project->getDebugDir()), to, assets);
 
 	defines = "";
 	for (std::string def : project->getDefines()) defines += "-D" + def + " ";
 	includes = "";
-	for (std::string inc : project->getIncludeDirs()) includes += "-I../" + directory.resolve(inc).toString() + " ";
+	for (std::string inc : project->getIncludeDirs()) includes += "-I../" + from.resolve(inc).toString() + " ";
 
-	writeFile(directory.resolve(Paths::get("build", "makefile")));
+	writeFile(to.resolve("makefile"));
 
 	//p("CC = ~/Projekte/emscripten/emcc");
 	p();
@@ -92,7 +92,7 @@ void ExporterEmscripten::exportSolution(Solution* solution, Path directory, Plat
 
 	for (std::string filename : project->getFiles()) {
 		if (!endsWith(filename, ".cpp") && !endsWith(filename, ".c")) continue;
-		Path builddir = directory.resolve("build");
+		Path builddir = to;
 		std::vector<std::string> dirs = split(filename, '/');
 		std::string name;
 		for (int i = 0; i < (int)dirs.size() - 1; ++i) {

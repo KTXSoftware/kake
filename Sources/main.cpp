@@ -133,19 +133,19 @@ namespace {
 	}
 
 namespace {
-	std::string exportKakeProject(Path directory, Platform platform) {
+	std::string exportKakeProject(Path from, Path to, Platform platform) {
 		std::cout << "kake.lua found, generating build files." << std::endl;
 
 		std::cout << "Generating " << fromPlatform(platform) + " solution";
 
-		Solution* solution = Solution::create(directory, platform);
+		Solution* solution = Solution::create(from, platform);
 		std::cout << ".";
 		solution->searchFiles();
 		std::cout << ".";
 		solution->flatten();
 		std::cout << ".";
 
-		if (!Files::exists(directory.resolve("build"))) Files::createDirectories(directory.resolve("build"));
+		if (!Files::exists(to)) Files::createDirectories(to);
 
 		Project* project = solution->getProjects()[0];
 		std::vector<std::string> files = project->getFiles();
@@ -165,7 +165,7 @@ namespace {
 		else if (platform == HTML5) exporter = new ExporterEmscripten();
 		else if (platform == Linux) exporter = new ExporterCodeBlocks();
 		else exporter = new ExporterVisualStudio();
-		exporter->exportSolution(solution, directory, platform);
+		exporter->exportSolution(solution, from, to, platform);
 
 		std::cout << ".done." << std::endl;
 		return solution->getName();
@@ -175,9 +175,9 @@ namespace {
 		return Files::exists(directory.resolve("kake.lua"));
 	}
 
-	std::string exportProject(Path directory, Platform platform) {
-		if (isKakeProject(directory)) {
-			return exportKakeProject(directory, platform);
+	std::string exportProject(Path from, Path to, Platform platform) {
+		if (isKakeProject(from)) {
+			return exportKakeProject(from, to, platform);
 		}
 		else {
 			std::cerr << "kake.lua not found." << std::endl;
@@ -188,7 +188,8 @@ namespace {
 
 int main(int argc, char** argv) {
 	Random::init(rand());
-	std::string path = ".";
+	std::string from = ".";
+	std::string to = "build";
 	#ifdef SYS_WINDOWS
 	Platform platform = Platform::Windows;
 	#endif
@@ -215,7 +216,8 @@ int main(int argc, char** argv) {
 		else if (startsWith(arg, "gfx=")) Options::setGraphicsApi(arg.substr(4));
 		else if (startsWith(arg, "vs=")) Options::setVisualStudioVersion(arg.substr(3));
 
-		else path = arg;
+		else if (startsWith(arg, "from=")) from = arg.substr(5);
+		else if (startsWith(arg, "to=")) to = arg.substr(3);
 	}
-	exportProject(Paths::get(path), platform);
+	exportProject(Paths::get(from), Paths::get(to), platform);
 }

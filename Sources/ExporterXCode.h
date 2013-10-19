@@ -52,6 +52,6 @@ namespace kake {
 		static Directory* addDirectory(std::string dirname, std::vector<Directory*>& directories);
 		void exportWorkspace(Path directory, Solution* solution);
 		static std::string newId();
-		void exportSolution(Solution* solution, Path directory, Platform platform) override;
+		void exportSolution(Solution* solution, Path from, Path to, Platform platform) override;
 	};
 }

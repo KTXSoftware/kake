@@ -4,6 +4,6 @@
 
 namespace kake {
 	class ExporterCodeBlocks : public Exporter {
-		void exportSolution(Solution* solution, Path directory, Platform platform) override;
+		void exportSolution(Solution* solution, Path from, Path to, Platform platform) override;
 	};
 }
