@@ -3,7 +3,7 @@
 #include "Solution.h"
 #include "String.h"
 #include <set>
-#ifdef __GNUC__
+#if defined __GNUC__ && !defined __clang__
 #include <boost/regex.hpp>
 #else
 #include <regex>
@@ -63,7 +63,7 @@ UUID Project::getUuid() {
 
 bool Project::matches(std::string text, std::string pattern) {
 	std::string regexstring = replace(replace(replace(replace(pattern, '.', "\\."), "**", ".?"), '*', "[^/]*"), '?', '*');
-#ifdef __GNUC__
+#if defined __GNUC__ && !defined __clang__
     boost::regex regex(regexstring);
 	return boost::regex_match(text.begin(), text.end(), regex);
 #else

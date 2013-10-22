@@ -77,7 +77,7 @@ void ExporterEmscripten::exportSolution(Solution* solution, Path from, Path to, 
 	std::string oline;
 	for (std::string filename : project->getFiles()) {
 		if (!endsWith(filename, ".cpp") && !endsWith(filename, ".c")) continue;
-		int lastpoint = filename.find_last_of('.');
+		auto lastpoint = filename.find_last_of('.');
 		std::string oname = filename.substr(0, lastpoint) + ".o";
 		oname = replace(oname, "../", "");
 		oline += " " + oname;
@@ -102,7 +102,7 @@ void ExporterEmscripten::exportSolution(Solution* solution, Path from, Path to, 
 			builddir = builddir.resolve(s);
 			if (!Files::exists(builddir)) Files::createDirectories(builddir);
 		}
-		int lastpoint = filename.find_last_of('.');
+		auto lastpoint = filename.find_last_of('.');
 		std::string oname = filename.substr(0, lastpoint) + ".o";
 		oname = replace(oname, "../", "");
 		p(oname + ": ../" + filename);
