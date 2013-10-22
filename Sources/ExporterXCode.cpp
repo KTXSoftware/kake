@@ -234,7 +234,7 @@ void ExporterXCode::exportSolution(Solution* solution, Path from, Path to, Platf
 
 	for (Framework* framework : frameworks)
 		p(framework->getFileId() + " /* " + framework->toString() + " */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = " + framework->toString() + "; path = System/Library/Frameworks/" + framework->toString() + "; sourceTree = SDKROOT; };", 2);
-	p(debugDirFileId + " /* Deployment */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Deployment; path = \"../" + project->getDebugDir() + "\"; sourceTree = \"<group>\"; };", 2);
+	p(debugDirFileId + " /* Deployment */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Deployment; path = \"" + from.resolve(project->getDebugDir()).toAbsolutePath().toString() + "\"; sourceTree = \"<group>\"; };", 2);
 	for (File* file : files) {
 		std::string filetype = "unknown";
 		if (endsWith(file->getName(), ".plist")) filetype = "text.plist.xml";
@@ -245,7 +245,7 @@ void ExporterXCode::exportSolution(Solution* solution, Path from, Path to, Platf
 		if (endsWith(file->getName(), ".cc")) filetype = "sourcecode.c.cpp";
 		if (endsWith(file->getName(), ".mm")) filetype = "sourcecode.c.objcpp";
 		if (endsWith(file->getName(), ".s")) filetype = "sourcecode.asm";
-		p(file->getFileId() + " /* " + file->toString() + " */ = {isa = PBXFileReference; lastKnownFileType = " + filetype + "; name = \"" + file->getLastName() + "\"; path = \"" + file->toString() + "\"; sourceTree = \"<group>\"; };", 2);
+		p(file->getFileId() + " /* " + file->toString() + " */ = {isa = PBXFileReference; lastKnownFileType = " + filetype + "; name = \"" + file->getLastName() + "\"; path = \"" + from.resolve(file->toString()).toAbsolutePath().toString() + "\"; sourceTree = \"<group>\"; };", 2);
 	}
 	if (platform == OSX)
 		p(iconFileId + " /* icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = icon.icns; sourceTree = \"<group>\"; };", 2);
@@ -533,9 +533,9 @@ void ExporterXCode::exportSolution(Solution* solution, Path from, Path to, Platf
 				p("\"GCC_THUMB_SUPPORT[arch=armv6]\" = \"\";", 4);
 			}
 			p("HEADER_SEARCH_PATHS = (", 4);
-				for (std::string path : project->getIncludeDirs()) p("../" + path + ",", 5);
+				for (std::string path : project->getIncludeDirs()) p(from.resolve(path).toAbsolutePath().toString() + ",", 5);
 			p(");", 4);
-			p("INFOPLIST_FILE = \"../" + plistname + "\";", 4);
+			p("INFOPLIST_FILE = \"" + from.resolve(plistname).toAbsolutePath().toString() + "\";", 4);
 			p("PRODUCT_NAME = \"$(TARGET_NAME)\";", 4);
 			p("WRAPPER_EXTENSION = app;", 4);
 		p("};", 3);
@@ -556,9 +556,9 @@ void ExporterXCode::exportSolution(Solution* solution, Path from, Path to, Platf
 				p("\"GCC_THUMB_SUPPORT[arch=armv6]\" = \"\";", 4);
 			}
 			p("HEADER_SEARCH_PATHS = (", 4);
-				for (std::string path : project->getIncludeDirs()) p("../" + path + ",", 5);
+				for (std::string path : project->getIncludeDirs()) p(from.resolve(path).toAbsolutePath().toString() + ",", 5);
 			p(");", 4);
-			p("INFOPLIST_FILE = \"../" + plistname + "\";", 4);
+			p("INFOPLIST_FILE = \"" + from.resolve(plistname).toAbsolutePath().toString() + "\";", 4);
 			p("PRODUCT_NAME = \"$(TARGET_NAME)\";", 4);
 			p("WRAPPER_EXTENSION = app;", 4);
 		p("};", 3);
