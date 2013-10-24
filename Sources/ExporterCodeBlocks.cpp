@@ -20,7 +20,7 @@ void ExporterCodeBlocks::exportSolution(Solution* solution, Path from, Path to, 
 			p("<Build>", 2);
 				p("<Target title=\"Debug\">", 3);
 					p("<Option output=\"bin/Debug/" + project->getName() + "\" prefix_auto=\"1\" extension_auto=\"1\" />", 4);
-					if (project->getDebugDir().size() > 0) p(std::string("<Option working_dir=\"") + from.relativize(Paths::get(project->getDebugDir())).toAbsolutePath().toString() + "\" />", 4);
+					if (project->getDebugDir().size() > 0) p(std::string("<Option working_dir=\"") + from.resolve(Paths::get(project->getDebugDir())).toAbsolutePath().toString() + "\" />", 4);
 					p("<Option object_output=\"obj/Debug/\" />", 4);
 					p("<Option type=\"1\" />", 4);
 					p("<Option compiler=\"gcc\" />", 4);
@@ -30,7 +30,7 @@ void ExporterCodeBlocks::exportSolution(Solution* solution, Path from, Path to, 
 				p("</Target>", 3);
 				p("<Target title=\"Release\">", 3);
 					p("<Option output=\"bin/Release/" + project->getName() + "\" prefix_auto=\"1\" extension_auto=\"1\" />", 4);
-					if (project->getDebugDir().size() > 0) p(std::string("<Option working_dir=\"") + from.relativize(Paths::get(project->getDebugDir())).toAbsolutePath().toString() + "\" />", 4);
+					if (project->getDebugDir().size() > 0) p(std::string("<Option working_dir=\"") + from.resolve(Paths::get(project->getDebugDir())).toAbsolutePath().toString() + "\" />", 4);
 					p("<Option object_output=\"obj/Release/\" />", 4);
 					p("<Option type=\"0\" />", 4);
 					p("<Option compiler=\"gcc\" />", 4);
@@ -48,7 +48,7 @@ void ExporterCodeBlocks::exportSolution(Solution* solution, Path from, Path to, 
 					p("<Add option=\"-D" + replace(def, "\"", "\\\"") + "\" />", 3);
 				}
 				for (std::string inc : project->getIncludeDirs()) {
-					p("<Add directory=\"../" + inc + "\" />", 3);
+					p("<Add directory=\"" + from.resolve(Paths::get(inc)).toAbsolutePath().toString() + "\" />", 3);
 				}
 			p("</Compiler>", 2);
 			p("<Linker>", 2);
@@ -60,7 +60,7 @@ void ExporterCodeBlocks::exportSolution(Solution* solution, Path from, Path to, 
 			p("</Linker>", 2);
 			for (std::string file : project->getFiles()) {
 				if (endsWith(file, ".c") || endsWith(file, ".cpp")) {
-					p("<Unit filename=\"../" + file + "\">", 2);
+					p("<Unit filename=\"" + from.resolve(Paths::get(file)).toAbsolutePath().toString() + "\">", 2);
 						p("<Option compilerVar=\"CC\" />", 3);
 					p("</Unit>", 2);
 				}
