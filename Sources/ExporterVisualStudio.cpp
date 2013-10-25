@@ -568,14 +568,14 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 	std::string debuglibs = "";
 	for (Project* proj : project->getSubProjects()) debuglibs += "Debug\\" + proj->getName() + ".lib;";
 	for (std::string lib : project->getLibs()) {
-		if (Files::exists(from.resolve(lib))) debuglibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+		if (Files::exists(from.resolve(lib + ".lib"))) debuglibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 		else debuglibs += lib + ".lib;";
 	}
 
 	std::string releaselibs = "";
 	for (Project* proj : project->getSubProjects()) releaselibs += "Release\\" + proj->getName() + ".lib;";
 	for (std::string lib : project->getLibs()) {
-		if (Files::exists(from.resolve(lib))) releaselibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+		if (Files::exists(from.resolve(lib + ".lib"))) releaselibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 		else releaselibs += lib + ".lib;";
 	}
 
@@ -627,15 +627,15 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<GenerateDebugInformation>true</GenerateDebugInformation>", 3);
 				std::string libs = debuglibs;
 				for (std::string lib : project->getLibsFor("debug_" + system)) {
-					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+					if (Files::exists(from.resolve(lib + ".lib"))) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor(system)) {
-					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+					if (Files::exists(from.resolve(lib + ".lib"))) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor("debug")) {
-					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+					if (Files::exists(from.resolve(lib + ".lib"))) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				p("<AdditionalDependencies>" + libs + "kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>", 3);
@@ -679,15 +679,15 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<OptimizeReferences>true</OptimizeReferences>", 3);
 				std::string libs = releaselibs;
 				for (std::string lib : project->getLibsFor("release_" + system)) {
-					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+					if (Files::exists(from.resolve(lib + ".lib"))) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor(system)) {
-					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+					if (Files::exists(from.resolve(lib + ".lib"))) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				for (std::string lib : project->getLibsFor("release")) {
-					if (contains(lib, '/')) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+					if (Files::exists(from.resolve(lib + ".lib"))) libs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 					else libs += lib + ".lib;";
 				}
 				p("<AdditionalDependencies>" + libs + "kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>", 3);

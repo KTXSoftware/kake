@@ -45,7 +45,8 @@ void Project::flatten() {
 			for (std::string lib : system.second) {
 				if (systemDependendLibraries.find(system.first) == systemDependendLibraries.end()) systemDependendLibraries[system.first] = std::vector<std::string>();
 				if (!contains(systemDependendLibraries[system.first], stringify(subbasedir.resolve(lib)))) {
-					systemDependendLibraries[system.first].push_back(stringify(subbasedir.resolve(lib)));
+					if (!contains(lib, '/') && !contains(lib, '\\')) systemDependendLibraries[system.first].push_back(lib);
+					else systemDependendLibraries[system.first].push_back(stringify(subbasedir.resolve(lib)));
 				}
 			}
 		}
