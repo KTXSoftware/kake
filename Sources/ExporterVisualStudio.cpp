@@ -107,6 +107,12 @@ void ExporterVisualStudio::exportSolution(Solution* solution, Path from, Path to
 
 	writeFile(to.resolve(solution->getName() + ".sln"));
 
+	if ((platform == Platform::WindowsRT || platform == Platform::Windows) && Options::getVisualStudioVersion() == VS2013) {
+		p("Microsoft Visual Studio Solution File, Format Version 12.00");
+		p("# Visual Studio 2013");
+		p("VisualStudioVersion = 12.0.21005.1");
+		p("MinimumVisualStudioVersion = 10.0.40219.1");
+	}
 	if (platform == Platform::WindowsRT || (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2012)) {
 		p("Microsoft Visual Studio Solution File, Format Version 12.00");
 		p("# Visual Studio 2012");
@@ -428,7 +434,8 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 	writeFile(to.resolve(project->getName() + ".vcxproj"));
 
 	p("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-	p("<Project DefaultTargets=\"Build\" ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
+	if (Options::getVisualStudioVersion() == VS2013) p("<Project DefaultTargets=\"Build\" ToolsVersion=\"12.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
+	else p("<Project DefaultTargets=\"Build\" ToolsVersion=\"4.0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
 	p("<ItemGroup Label=\"ProjectConfigurations\">", 1);
 	for (std::string system : getSystems(platform)) {
 		for (std::string config : getConfigs(platform)) {
@@ -470,7 +477,10 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 		p("<PropertyGroup Condition=\"'$(Configuration)'=='Debug'\" Label=\"Configuration\">", 1);
 		p("<ConfigurationType>Application</ConfigurationType>", 2);
 		p("<UseDebugLibraries>true</UseDebugLibraries>", 2);
-		if (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2012) {
+		if (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2013) {
+			p("<PlatformToolset>v120</PlatformToolset>", 2);
+		}
+		else if (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2012) {
 			p("<PlatformToolset>v110</PlatformToolset>", 2);
 		}
 		if (platform == Platform::Windows) {
@@ -484,6 +494,9 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 		p("<PropertyGroup Condition=\"'$(Configuration)'=='Release'\" Label=\"Configuration\">", 1);
 		p("<ConfigurationType>Application</ConfigurationType>", 2);
 		p("<UseDebugLibraries>false</UseDebugLibraries>", 2);
+		if (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2013) {
+			p("<PlatformToolset>v120</PlatformToolset>", 2);
+		}
 		if (platform == Platform::Windows && Options::getVisualStudioVersion() == VS2012) {
 			p("<PlatformToolset>v110</PlatformToolset>", 2);
 		}
@@ -555,14 +568,14 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 	std::string debuglibs = "";
 	for (Project* proj : project->getSubProjects()) debuglibs += "Debug\\" + proj->getName() + ".lib;";
 	for (std::string lib : project->getLibs()) {
-		if (contains(lib, '/')) debuglibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+		if (Files::exists(from.resolve(lib))) debuglibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 		else debuglibs += lib + ".lib;";
 	}
 
 	std::string releaselibs = "";
 	for (Project* proj : project->getSubProjects()) releaselibs += "Release\\" + proj->getName() + ".lib;";
 	for (std::string lib : project->getLibs()) {
-		if (contains(lib, '/')) releaselibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
+		if (Files::exists(from.resolve(lib))) releaselibs += from.resolve(lib).toAbsolutePath().toString() + ".lib;";
 		else releaselibs += lib + ".lib;";
 	}
 
@@ -599,6 +612,7 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>", 3);
 				p("<MultiProcessorCompilation>true</MultiProcessorCompilation>", 3);
 				p("<MinimalRebuild>false</MinimalRebuild>", 3);
+				if (Options::getVisualStudioVersion() == VS2013) p("<SDLCheck>true</SDLCheck>", 3);
 			}
 			else if (platform == Platform::PlayStation3) {
 				p("<UserPreprocessorDefinitions>" + defines + "_DEBUG;__CELL_ASSERT__;%(UserPreprocessorDefinitions);</UserPreprocessorDefinitions>", 3);
@@ -647,6 +661,7 @@ void ExporterVisualStudio::exportProject(Path from, Path to, Project* project, P
 				p("<RuntimeLibrary>MultiThreaded</RuntimeLibrary>", 3);
 				p("<MultiProcessorCompilation>true</MultiProcessorCompilation>", 3);
 				p("<MinimalRebuild>false</MinimalRebuild>", 3);
+				if (Options::getVisualStudioVersion() == VS2013) p("<SDLCheck>true</SDLCheck>", 3);
 			}
 			else if (platform == Platform::PlayStation3) {
 				p("<UserPreprocessorDefinitions>" + defines + "NDEBUG;%(UserPreprocessorDefinitions);</UserPreprocessorDefinitions>", 3);

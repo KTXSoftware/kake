@@ -125,12 +125,14 @@ void ClCompile::print() {
 		tag("MultiProcessorCompilation", multiProcessorCompilation ? "true" : "false");
 		tag("MinimalRebuild", minimalRebuild ? "true" : "false");
 		tag("ObjectFileName", objectFileName);
+		tag("SDLCheck", "true");
 	}
 	else if (platform == Platform::WindowsRT) {
 		//tag("PreprocessorDefinitions", defineLine);
 		tag("PrecompiledHeader", "NotUsing");
 		tag("ObjectFileName", objectFileName);
 		tag("DisableSpecificWarnings", "4453");
+		tag("SDLCheck", "true");
 	}
 	else if (platform == Platform::PlayStation3) {
 		tag("UserPreprocessorDefinitions", userPreprocessorDefinitions);
