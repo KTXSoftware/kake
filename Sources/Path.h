@@ -20,5 +20,6 @@ namespace kake {
 		Path get(std::string a, std::string b);
 		Path get(std::string a, std::string b, std::string c);
 		Path get(std::string a, std::string b, std::string c, std::string d);
+		Path executableDir();
 	}
 }
