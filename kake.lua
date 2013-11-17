@@ -9,6 +9,7 @@ project:addExclude("build/**")
 project:addFile("Sources/**")
 project:addExclude("kmdlib/.git/**")
 project:addFile("kmdlib/**")
+project:addIncludeDir("kmdlib")
 
 project:addFile("lua/lapi.c")
 project:addFile("lua/lcode.c")

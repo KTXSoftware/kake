@@ -10,6 +10,7 @@ namespace kake {
 		Android,
 		Xbox360,
 		Linux,
-		HTML5
+		HTML5,
+		Tizen
 	};
 }

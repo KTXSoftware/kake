@@ -119,3 +119,17 @@ Path Path::toAbsolutePath() {
     return Paths::get(buffer);
 #endif
 }
+
+Path Paths::executableDir() {
+#ifdef SYS_WINDOWS
+	char path[MAX_PATH];
+	HMODULE module = GetModuleHandle(nullptr);
+	GetModuleFileNameA(module, path, sizeof(path));
+	std::string s(path);
+	s = s.substr(0, lastIndexOf(s, '\\'));
+	if (endsWith(s, "build\\Debug") || endsWith(s, "build\\Release")) {
+		for (int i = 0; i < 2; ++i) s = s.substr(0, lastIndexOf(s, '\\'));
+	}
+	return Paths::get(s);
+#endif
+}

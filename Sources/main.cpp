@@ -1,6 +1,7 @@
 #include "ExporterAndroid.h"
 #include "ExporterCodeBlocks.h"
 #include "ExporterEmscripten.h"
+#include "ExporterTizen.h"
 #include "ExporterVisualStudio.h"
 #include "ExporterXCode.h"
 #include "Files.h"
@@ -52,6 +53,8 @@ namespace {
 			return "Linux";
 		case HTML5:
 			return "HTML5";
+		case Tizen:
+			return "Tizen";
 		default:
 			return "unknown";
 		}
@@ -86,6 +89,8 @@ namespace {
 			case Linux:
 				return "glsl";
 			case HTML5:
+				return "essl";
+			case Tizen:
 				return "essl";
 			default:
 				return "unknown";
@@ -160,11 +165,12 @@ namespace {
 		}
 
 		Exporter* exporter = nullptr;
-		if (platform == iOS || platform == OSX) exporter = new ExporterXCode();
-		else if (platform == Android) exporter = new ExporterAndroid();
-		else if (platform == HTML5) exporter = new ExporterEmscripten();
-		else if (platform == Linux) exporter = new ExporterCodeBlocks();
-		else exporter = new ExporterVisualStudio();
+		if (platform == iOS || platform == OSX) exporter = new ExporterXCode;
+		else if (platform == Android) exporter = new ExporterAndroid;
+		else if (platform == HTML5) exporter = new ExporterEmscripten;
+		else if (platform == Linux) exporter = new ExporterCodeBlocks;
+		else if (platform == Tizen) exporter = new ExporterTizen;
+		else exporter = new ExporterVisualStudio;
 		exporter->exportSolution(solution, from, to, platform);
 
 		std::cout << ".done." << std::endl;
@@ -210,6 +216,7 @@ int main(int argc, char** argv) {
 		else if (arg == "osx") platform = OSX;
 		else if (arg == "ios") platform = iOS;
 		else if (arg == "html5") platform = HTML5;
+		else if (arg == "tizen") platform = Tizen;
 
 		else if (arg == "pch") Options::setPrecompiledHeaders(true);
 		else if (startsWith(arg, "intermediate=")) Options::setIntermediateDrive(arg.substr(13));

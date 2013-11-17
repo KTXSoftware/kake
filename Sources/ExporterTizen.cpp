@@ -1,4 +1,5 @@
 #include "ExporterTizen.h"
+#include "FileReader.h"
 #include "Files.h"
 #include "Project.h"
 #include "Solution.h"
@@ -24,6 +25,11 @@ namespace {
 			}
 		}
 	}
+
+	std::string readFile(std::string filename) {
+		kmd::FileReader reader(filename.c_str());
+		return std::string((char*)reader.readAll(), reader.size());
+	}
 }
 
 void ExporterTizen::exportSolution(Solution* solution, Path from, Path to, Platform platform) {
@@ -31,40 +37,24 @@ void ExporterTizen::exportSolution(Solution* solution, Path from, Path to, Platf
 	
 	copyDirectory(from.resolve(project->getDebugDir()), to.resolve("data"));
 
-	std::ifstream dotproject(Paths::executableDir().resolve(".project").toString());
-	
+	std::string dotcproject = readFile(Paths::executableDir().resolve(Paths::get("Data", "tizen", ".cproject")).toString());
+	writeFile(to.resolve(".cproject"));
+	p(replace(dotcproject, "{ProjectName}", solution->getName()));
+	closeFile();
+
+	std::string dotproject = readFile(Paths::executableDir().resolve(Paths::get("Data", "tizen", ".project")).toString());
 	writeFile(to.resolve(".project"));
-	
+	p(replace(dotproject, "{ProjectName}", solution->getName()));
 	closeFile();
 
-	
-	writeFile(to.resolve(Paths::get("jni", "Android.mk")));
-	p("LOCAL_PATH := $(call my-dir)");
-	p();
-	p("include $(CLEAR_VARS)");
-	p();
-	p("LOCAL_MODULE    := Kore");
-	std::string files = "";
-	for (std::string filename : project->getFiles()) if (endsWith(filename, ".c") || endsWith(filename, ".cpp") || endsWith(filename, ".cc") || endsWith(filename, ".s")) files += "../../" + filename + " ";
-	p("LOCAL_SRC_FILES := " + files);
-	std::string defines = "";
-	for (std::string def : project->getDefines()) defines += "-D" + replace(def, '\"', "\\\"") + " ";
-	p("LOCAL_CFLAGS := " + defines);
-	std::string includes = "";
-	for (std::string inc : project->getIncludeDirs()) includes += "$(LOCAL_PATH)/../../" + inc + " ";
-	p("LOCAL_C_INCLUDES := " + includes);
-	p("LOCAL_LDLIBS    := -llog -lGLESv2");
-	p();
-	p("include $(BUILD_SHARED_LIBRARY)");
-	p();
+	std::string manifest = readFile(Paths::executableDir().resolve(Paths::get("Data", "tizen", "manifest.xml")).toString());
+	writeFile(to.resolve("manifest.xml"));
+	p(replace(manifest, "{ProjectName}", solution->getName()));
 	closeFile();
 
-	writeFile(to.resolve(Paths::get("jni", "Application.mk")));
-	p("APP_CPPFLAGS += -fexceptions -frtti");
-	p("APP_STL := gnustl_static");
-	//p("APP_ABI := all");
-	p("APP_ABI := armeabi-v7a");
-	//p("LOCAL_ARM_NEON := true");
-
-	closeFile();
+	for (auto file : project->getFiles()) {
+		Path target = to.resolve("Sources").resolve(file);
+		createDirectory(Paths::get(target.path.substr(0, lastIndexOf(target.path, '/'))));
+		Files::copy(from.resolve(file), target, true);
+	}
 }
