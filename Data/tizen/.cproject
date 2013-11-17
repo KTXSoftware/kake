@@ -41,12 +41,14 @@
 								</option>
 								<option id="gnu.cpp.compiler.option.include.paths.1680601896" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									{includes}
 								</option>
 								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.1028920890" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.1910515405" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_DEBUG"/>
+									{defines}
 								</option>
 								<inputType id="sbi.gnu.cpp.compiler.tizen.inputType.261543595" superClass="sbi.gnu.cpp.compiler.tizen.inputType"/>
 							</tool>
@@ -70,12 +72,14 @@
 								</option>
 								<option id="gnu.c.compiler.option.include.paths.170547337" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									{includes}
 								</option>
 								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.1347744630" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.2107328336" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_DEBUG"/>
+									{defines}
 								</option>
 								<inputType id="sbi.gnu.c.compiler.tizen.inputType.2122885743" superClass="sbi.gnu.c.compiler.tizen.inputType"/>
 							</tool>
@@ -133,9 +137,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="res"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Sources"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -181,6 +183,7 @@
 								</option>
 								<option id="gnu.cpp.compiler.option.include.paths.1484969498" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									{includes}
 								</option>
 								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.1689457542" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
@@ -207,6 +210,7 @@
 								</option>
 								<option id="gnu.c.compiler.option.include.paths.1109684748" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									{includes}
 								</option>
 								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.1995134842" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
@@ -267,9 +271,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="res"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="inc"/>
-						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="Sources"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -316,10 +318,12 @@
 								<option id="gnu.cpp.compiler.option.include.paths.146670520" superClass="gnu.cpp.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SDK_INSTALL_PATH}/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									{includes}
 								</option>
 								<option id="gnu.cpp.compiler.option.preprocessor.def.728619208" superClass="gnu.cpp.compiler.option.preprocessor.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_USE_DA_"/>
 									<listOptionValue builtIn="false" value="_DEBUG"/>
+									{defines}
 								</option>
 								<option id="sbi.gnu.cpp.compiler.option.frameworks.cpp.1179207658" superClass="sbi.gnu.cpp.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>
@@ -347,10 +351,12 @@
 								<option id="gnu.c.compiler.option.include.paths.643894797" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${SDK_INSTALL_PATH}/library&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/inc}&quot;"/>
+									{includes}
 								</option>
 								<option id="gnu.c.compiler.option.preprocessor.def.symbols.1006431317" superClass="gnu.c.compiler.option.preprocessor.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_USE_DA_"/>
 									<listOptionValue builtIn="false" value="_DEBUG"/>
+									{defines}
 								</option>
 								<option id="sbi.gnu.c.compiler.option.frameworks.cpp.86035003" superClass="sbi.gnu.c.compiler.option.frameworks.cpp" valueType="userObjs">
 									<listOptionValue builtIn="false" value="osp"/>

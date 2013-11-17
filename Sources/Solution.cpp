@@ -47,6 +47,9 @@ namespace {
 		case Linux:
 			defines.push_back("SYS_LINUX");
 			break;
+		case Tizen:
+			defines.push_back("SYS_TIZEN");
+			break;
 		}
 		return defines;
 	}
@@ -335,6 +338,8 @@ namespace {
 		lua_setfield(L, -2, "WindowsRT");
 		lua_pushinteger(L, (int)Platform::Xbox360);
 		lua_setfield(L, -2, "Xbox360");
+		lua_pushinteger(L, (int)Platform::Tizen);
+		lua_setfield(L, -2, "Tizen");
 		lua_setglobal(L, "Platform");
 
 		lua_pushinteger(L, (int)Options::getGraphicsApi());
