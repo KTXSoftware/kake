@@ -25,7 +25,6 @@
 		E122EB90174E2A9E006666C6 /* Project.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E122EB74174E2A9E006666C6 /* Project.cpp */; };
 		E122EB91174E2A9E006666C6 /* Random.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E122EB76174E2A9E006666C6 /* Random.cpp */; };
 		E122EB92174E2A9E006666C6 /* Solution.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E122EB78174E2A9E006666C6 /* Solution.cpp */; };
-		E122EB93174E2A9E006666C6 /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E122EB7B174E2A9E006666C6 /* stb_image.cpp */; };
 		E122EB94174E2A9E006666C6 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E122EB7D174E2A9E006666C6 /* String.cpp */; };
 		E122EB95174E2A9E006666C6 /* u128.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E122EB7F174E2A9E006666C6 /* u128.cpp */; };
 		E122EB96174E2A9E006666C6 /* UUID.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E122EB81174E2A9E006666C6 /* UUID.cpp */; };
@@ -61,6 +60,10 @@
 		E122EBF2174E2B82006666C6 /* lundump.c in Sources */ = {isa = PBXBuildFile; fileRef = E122EBCD174E2B82006666C6 /* lundump.c */; };
 		E122EBF3174E2B82006666C6 /* lvm.c in Sources */ = {isa = PBXBuildFile; fileRef = E122EBCF174E2B82006666C6 /* lvm.c */; };
 		E122EBF4174E2B82006666C6 /* lzio.c in Sources */ = {isa = PBXBuildFile; fileRef = E122EBD1174E2B82006666C6 /* lzio.c */; };
+		E1427C511839814F00EDD746 /* ExporterTizen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E1427C4F1839814F00EDD746 /* ExporterTizen.cpp */; };
+		E1427C5A1839816D00EDD746 /* FileReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E1427C531839816D00EDD746 /* FileReader.cpp */; };
+		E1427C5B1839816D00EDD746 /* Reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E1427C551839816D00EDD746 /* Reader.cpp */; };
+		E1427C5C1839816D00EDD746 /* stb_image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E1427C571839816D00EDD746 /* stb_image.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -117,9 +120,6 @@
 		E122EB77174E2A9E006666C6 /* Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Random.h; path = ../../../Sources/Random.h; sourceTree = "<group>"; };
 		E122EB78174E2A9E006666C6 /* Solution.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Solution.cpp; path = ../../../Sources/Solution.cpp; sourceTree = "<group>"; };
 		E122EB79174E2A9E006666C6 /* Solution.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Solution.h; path = ../../../Sources/Solution.h; sourceTree = "<group>"; };
-		E122EB7A174E2A9E006666C6 /* stb_image_write.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_image_write.h; path = ../../../Sources/stb_image_write.h; sourceTree = "<group>"; };
-		E122EB7B174E2A9E006666C6 /* stb_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = stb_image.cpp; path = ../../../Sources/stb_image.cpp; sourceTree = "<group>"; };
-		E122EB7C174E2A9E006666C6 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = stb_image.h; path = ../../../Sources/stb_image.h; sourceTree = "<group>"; };
 		E122EB7D174E2A9E006666C6 /* String.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = String.cpp; path = ../../../Sources/String.cpp; sourceTree = "<group>"; };
 		E122EB7E174E2A9E006666C6 /* String.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = String.h; path = ../../../Sources/String.h; sourceTree = "<group>"; };
 		E122EB7F174E2A9E006666C6 /* u128.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = u128.cpp; path = ../../../Sources/u128.cpp; sourceTree = "<group>"; };
@@ -183,6 +183,15 @@
 		E122EBD0174E2B82006666C6 /* lvm.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lvm.h; path = ../../../lua/lvm.h; sourceTree = "<group>"; };
 		E122EBD1174E2B82006666C6 /* lzio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lzio.c; path = ../../../lua/lzio.c; sourceTree = "<group>"; };
 		E122EBD2174E2B82006666C6 /* lzio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lzio.h; path = ../../../lua/lzio.h; sourceTree = "<group>"; };
+		E1427C4F1839814F00EDD746 /* ExporterTizen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ExporterTizen.cpp; path = ../../../Sources/ExporterTizen.cpp; sourceTree = "<group>"; };
+		E1427C501839814F00EDD746 /* ExporterTizen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ExporterTizen.h; path = ../../../Sources/ExporterTizen.h; sourceTree = "<group>"; };
+		E1427C531839816D00EDD746 /* FileReader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FileReader.cpp; sourceTree = "<group>"; };
+		E1427C541839816D00EDD746 /* FileReader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileReader.h; sourceTree = "<group>"; };
+		E1427C551839816D00EDD746 /* Reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reader.cpp; sourceTree = "<group>"; };
+		E1427C561839816D00EDD746 /* Reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reader.h; sourceTree = "<group>"; };
+		E1427C571839816D00EDD746 /* stb_image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stb_image.cpp; sourceTree = "<group>"; };
+		E1427C581839816D00EDD746 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		E1427C591839816D00EDD746 /* stb_image_write.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image_write.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -225,6 +234,9 @@
 		E122EB4A174E2A80006666C6 /* kake */ = {
 			isa = PBXGroup;
 			children = (
+				E1427C521839816D00EDD746 /* kmdlib */,
+				E1427C4F1839814F00EDD746 /* ExporterTizen.cpp */,
+				E1427C501839814F00EDD746 /* ExporterTizen.h */,
 				E122EB97174E2B6D006666C6 /* lua */,
 				E122EB56174E2A9E006666C6 /* Ball.cpp */,
 				E122EB57174E2A9E006666C6 /* Ball.h */,
@@ -262,9 +274,6 @@
 				E122EB77174E2A9E006666C6 /* Random.h */,
 				E122EB78174E2A9E006666C6 /* Solution.cpp */,
 				E122EB79174E2A9E006666C6 /* Solution.h */,
-				E122EB7A174E2A9E006666C6 /* stb_image_write.h */,
-				E122EB7B174E2A9E006666C6 /* stb_image.cpp */,
-				E122EB7C174E2A9E006666C6 /* stb_image.h */,
 				E122EB7D174E2A9E006666C6 /* String.cpp */,
 				E122EB7E174E2A9E006666C6 /* String.h */,
 				E122EB7F174E2A9E006666C6 /* u128.cpp */,
@@ -349,6 +358,21 @@
 			name = lua;
 			sourceTree = "<group>";
 		};
+		E1427C521839816D00EDD746 /* kmdlib */ = {
+			isa = PBXGroup;
+			children = (
+				E1427C531839816D00EDD746 /* FileReader.cpp */,
+				E1427C541839816D00EDD746 /* FileReader.h */,
+				E1427C551839816D00EDD746 /* Reader.cpp */,
+				E1427C561839816D00EDD746 /* Reader.h */,
+				E1427C571839816D00EDD746 /* stb_image.cpp */,
+				E1427C581839816D00EDD746 /* stb_image.h */,
+				E1427C591839816D00EDD746 /* stb_image_write.h */,
+			);
+			name = kmdlib;
+			path = ../../../kmdlib;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -412,11 +436,12 @@
 				E122EB8C174E2A9E006666C6 /* Image.cpp in Sources */,
 				E122EB8D174E2A9E006666C6 /* main.cpp in Sources */,
 				E122EB8E174E2A9E006666C6 /* Options.cpp in Sources */,
+				E1427C5C1839816D00EDD746 /* stb_image.cpp in Sources */,
 				E122EB8F174E2A9E006666C6 /* Path.cpp in Sources */,
 				E122EB90174E2A9E006666C6 /* Project.cpp in Sources */,
 				E122EB91174E2A9E006666C6 /* Random.cpp in Sources */,
 				E122EB92174E2A9E006666C6 /* Solution.cpp in Sources */,
-				E122EB93174E2A9E006666C6 /* stb_image.cpp in Sources */,
+				E1427C5B1839816D00EDD746 /* Reader.cpp in Sources */,
 				E122EB94174E2A9E006666C6 /* String.cpp in Sources */,
 				E122EB95174E2A9E006666C6 /* u128.cpp in Sources */,
 				E122EB96174E2A9E006666C6 /* UUID.cpp in Sources */,
@@ -438,6 +463,7 @@
 				E122EBE2174E2B82006666C6 /* llex.c in Sources */,
 				E122EBE3174E2B82006666C6 /* lmathlib.c in Sources */,
 				E122EBE4174E2B82006666C6 /* lmem.c in Sources */,
+				E1427C511839814F00EDD746 /* ExporterTizen.cpp in Sources */,
 				E122EBE5174E2B82006666C6 /* loadlib.c in Sources */,
 				E122EBE6174E2B82006666C6 /* lobject.c in Sources */,
 				E122EBE7174E2B82006666C6 /* lopcodes.c in Sources */,
@@ -447,6 +473,7 @@
 				E122EBEB174E2B82006666C6 /* lstring.c in Sources */,
 				E122EBEC174E2B82006666C6 /* lstrlib.c in Sources */,
 				E122EBED174E2B82006666C6 /* ltable.c in Sources */,
+				E1427C5A1839816D00EDD746 /* FileReader.cpp in Sources */,
 				E122EBEE174E2B82006666C6 /* ltablib.c in Sources */,
 				E122EBEF174E2B82006666C6 /* ltm.c in Sources */,
 				E122EBF2174E2B82006666C6 /* lundump.c in Sources */,

@@ -120,6 +120,10 @@ Path Path::toAbsolutePath() {
 #endif
 }
 
+#ifdef SYS_OSX
+#include <mach-o/dyld.h>
+#endif
+
 Path Paths::executableDir() {
 #ifdef SYS_WINDOWS
 	char path[MAX_PATH];
@@ -130,6 +134,22 @@ Path Paths::executableDir() {
 	if (endsWith(s, "build\\Debug") || endsWith(s, "build\\Release")) {
 		for (int i = 0; i < 2; ++i) s = s.substr(0, lastIndexOf(s, '\\'));
 	}
+	return Paths::get(s);
+#endif
+#ifdef SYS_OSX
+	unsigned pathsize = 1001;
+	char path[pathsize];
+	_NSGetExecutablePath(path, &pathsize);
+	std::string s(path);
+	s = s.substr(0, lastIndexOf(s, '/'));
+	return Paths::get(s);
+#endif
+#ifdef SYS_LINUX
+	int pathsize = 1001;
+	char path[pathsize];
+	readlink("/proc/self/exe", path, pathsize);
+	std::string s(path);
+	s = s.substr(0, lastIndexOf(s, '/'));
 	return Paths::get(s);
 #endif
 }

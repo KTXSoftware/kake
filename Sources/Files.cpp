@@ -44,14 +44,15 @@ void Files::createDirectories(Path path) {
     SHCreateDirectoryExA(nullptr, replace(path.toAbsolutePath().path, '/', '\\').c_str(), nullptr);
 #endif
 #ifdef SYS_LINUX
-    mkdir(path.toString().c_str(), 0700);
     char* p;
     char file_path[1001];
-    std::strcpy(file_path, path.toString().c_str());
+	std::string dirpath;
+	if (endsWith(path.path, "/")) dirpath = path.path;
+	else dirpath = path.path + '/';
+	std::strcpy(file_path, dirpath.c_str());
     for (p = std::strchr(file_path + 1, '/'); p; p = strchr(p + 1, '/')) {
         *p='\0';
         if (mkdir(file_path, 0700) == -1) {
-            printf("%s\n", strerror(errno));
             if (errno != EEXIST) { *p = '/'; return; }
         }
         *p = '/';
@@ -60,7 +61,10 @@ void Files::createDirectories(Path path) {
 #ifdef SYS_OSX
     char* p;
     char file_path[1001];
-    std::strcpy(file_path, path.path.c_str());
+	std::string dirpath;
+	if (endsWith(path.path, "/")) dirpath = path.path;
+	else dirpath = path.path + '/';
+	std::strcpy(file_path, dirpath.c_str());
     for (p = std::strchr(file_path + 1, '/'); p; p = strchr(p + 1, '/')) {
         *p='\0';
         if (mkdir(file_path, 0700) == -1) {
@@ -92,12 +96,20 @@ void Files::copy(Path from, Path to, bool replace) {
     CopyFileA(from.toString().c_str(), to.toString().c_str(), replace ? FALSE : TRUE);
 #endif
 #ifdef SYS_LINUX
+	Path absolute = to.toAbsolutePath();
+	std::string s = absolute.path.substr(0, lastIndexOf(absolute.path, '/'));
+	Path dir = Paths::get(s);
+	if (!isDirectory(dir)) createDirectories(dir);
     pid_t pid = fork();
     if (pid == 0) {
         execl("/bin/cp", "/bin/cp", from.path.c_str(), to.path.c_str(), (char *)0);
     }
 #endif
 #ifdef SYS_OSX
+	Path absolute = to.toAbsolutePath();
+	std::string s = absolute.path.substr(0, lastIndexOf(absolute.path, '/'));
+	Path dir = Paths::get(s);
+	if (!isDirectory(dir)) createDirectories(dir);
     pid_t pid = fork();
     if (pid == 0) {
         execl("/bin/cp", "/bin/cp", from.path.c_str(), to.path.c_str(), (char *)0);
