@@ -124,6 +124,10 @@ Path Path::toAbsolutePath() {
 #include <mach-o/dyld.h>
 #endif
 
+#ifdef SYS_LINUX
+#include <unistd.h>
+#endif
+
 Path Paths::executableDir() {
 #ifdef SYS_WINDOWS
 	char path[MAX_PATH];

@@ -32,6 +32,7 @@
 			<Add option="-std=c++11" />
 			<Add option="-Wall" />
 			<Add option="-DSYS_LINUX" />
+			<Add directory="../kmdlib" />
 		</Compiler>
 		<Linker>
 			<Add option="-static -lboost_regex" />
@@ -55,6 +56,8 @@
 		<Unit filename="../Sources/ExporterEmscripten.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../Sources/ExporterTizen.cpp" />
+		<Unit filename="../Sources/ExporterTizen.h" />
 		<Unit filename="../Sources/ExporterVisualStudio.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -91,12 +94,16 @@
 		<Unit filename="../Sources/main.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/stb_image.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
 		<Unit filename="../Sources/u128.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../kmdlib/FileReader.cpp" />
+		<Unit filename="../kmdlib/FileReader.h" />
+		<Unit filename="../kmdlib/Reader.cpp" />
+		<Unit filename="../kmdlib/Reader.h" />
+		<Unit filename="../kmdlib/stb_image.cpp" />
+		<Unit filename="../kmdlib/stb_image.h" />
+		<Unit filename="../kmdlib/stb_image_write.h" />
 		<Unit filename="../lua/lapi.c">
 			<Option compilerVar="CC" />
 		</Unit>
