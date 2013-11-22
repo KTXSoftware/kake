@@ -344,7 +344,7 @@ void ExporterXCode::exportSolution(Solution* solution, Path from, Path to, Platf
 		p("name = " + solution->getName() + ";", 3);
 		p("productName = " + solution->getName() + ";", 3);
 		p("productReference = " + appFileId + " /* " + solution->getName() + ".app */;", 3);
-		p("productType = \"com.apple.product-type.application\";", 3);
+		p(std::string("productType = \"com.apple.product-type.") + (solution->isCmd() ? "tool" : "application") + "\";", 3);
 	p("};", 2);
 	p("/* End PBXNativeTarget section */");
 	p();
