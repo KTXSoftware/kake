@@ -1,7 +1,7 @@
 #include "Project.h"
 #include "Files.h"
 #include "Solution.h"
-#include "String.h"
+#include "StringHelper.h"
 #include <set>
 #if defined __GNUC__ && !defined __clang__
 #include <boost/regex.hpp>

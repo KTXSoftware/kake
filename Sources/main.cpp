@@ -11,7 +11,7 @@
 #include "Project.h"
 #include "Random.h"
 #include "Solution.h"
-#include "String.h"
+#include "StringHelper.h"
 #include <iostream>
 
 #ifdef SYS_OSX

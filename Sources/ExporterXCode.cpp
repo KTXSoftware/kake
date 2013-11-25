@@ -3,7 +3,7 @@
 #include "Files.h"
 #include "Project.h"
 #include "Solution.h"
-#include "String.h"
+#include "StringHelper.h"
 #include <stdexcept>
 
 using namespace kake;

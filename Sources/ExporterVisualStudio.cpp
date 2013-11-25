@@ -6,7 +6,7 @@
 #include "Project.h"
 #include "Platform.h"
 #include "Solution.h"
-#include "String.h"
+#include "StringHelper.h"
 #include <algorithm>
 #include <set>
 #include <stdexcept>
