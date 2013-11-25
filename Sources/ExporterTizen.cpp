@@ -66,7 +66,7 @@ void ExporterTizen::exportSolution(Solution* solution, Path from, Path to, Platf
 	closeFile();
 
 	for (auto file : project->getFiles()) {
-		Path target = to.resolve("Sources").resolve(file);
+		Path target = to.resolve("CopiedSources").resolve(file);
 		createDirectory(Paths::get(target.path.substr(0, lastIndexOf(target.path, '/'))));
 		Files::copy(from.resolve(file), target, true);
 	}
