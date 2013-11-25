@@ -42,7 +42,7 @@ void ExporterTizen::exportSolution(Solution* solution, Path from, Path to, Platf
 	dotcproject = replace(dotcproject, "{ProjectName}", solution->getName());
 	std::string includes;
 	for (auto include : project->getIncludeDirs()) {
-		includes += "<listOptionValue builtIn=\"false\" value=\"&quot;${workspace_loc:/${ProjName}/Sources/" + include + "}&quot;\"/>";
+		includes += "<listOptionValue builtIn=\"false\" value=\"&quot;${workspace_loc:/${ProjName}/CopiedSources/" + include + "}&quot;\"/>";
 	}
 	dotcproject = replace(dotcproject, "{includes}", includes);
 	std::string defines;
