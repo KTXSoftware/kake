@@ -545,13 +545,13 @@ $(call import-module,nv_thread)
 	p();
 	p("LOCAL_MODULE    := Kore");
 	std::string files = "";
-	for (std::string filename : project->getFiles()) if (endsWith(filename, ".c") || endsWith(filename, ".cpp") || endsWith(filename, ".cc") || endsWith(filename, ".s")) files += "../../" + filename + " ";
+	for (std::string filename : project->getFiles()) if (endsWith(filename, ".c") || endsWith(filename, ".cpp") || endsWith(filename, ".cc") || endsWith(filename, ".s")) files += "../../../" + filename + " ";
 	p("LOCAL_SRC_FILES := " + files);
 	std::string defines = "";
 	for (std::string def : project->getDefines()) defines += "-D" + replace(def, '\"', "\\\"") + " ";
 	p("LOCAL_CFLAGS := " + defines);
 	std::string includes = "";
-	for (std::string inc : project->getIncludeDirs()) includes += "$(LOCAL_PATH)/../../" + inc + " ";
+	for (std::string inc : project->getIncludeDirs()) includes += "$(LOCAL_PATH)/../../../" + inc + " ";
 	p("LOCAL_C_INCLUDES := " + includes);
 	p("LOCAL_LDLIBS    := -llog -lGLESv2");
 	p();
