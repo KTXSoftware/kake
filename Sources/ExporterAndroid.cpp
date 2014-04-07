@@ -31,17 +31,17 @@ namespace {
 		return std::string((char*)reader.readAll(), reader.size());
 	}
 }
-	
+
 void ExporterAndroid::exportSolution(Solution* solution, Path from, Path to, Platform platform) {
 	Project* project = solution->getProjects()[0];
 	//String libname = solution.getName().toLowerCase().replace(' ', '-');
-		
+
 	bool nvpack = false; //Configuration.getAndroidDevkit() == AndroidDevkit.nVidia;
-	
+
 	copyDirectory(from.resolve(project->getDebugDir()), to.resolve("assets"));
-	
+
 	Files::copy(Paths::executableDir().resolve(Paths::get("Data", "android", ".classpath")), to.resolve(".classpath"), true);
-	
+
 	if (nvpack) {
 		std::string file = readFile(Paths::executableDir().resolve(Paths::get("Data", "android", "nvidia", ".project")).toString());
 		writeFile(to.resolve(".project"));
@@ -57,7 +57,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path from, Path to, Pla
 		out->write(file.c_str(), file.size());
 		closeFile();
 	}
-		
+
 	if (nvpack) {
 		std::string file = readFile(Paths::executableDir().resolve(Paths::get("Data", "android", "nvidia", ".cproject")).toString());
 		writeFile(to.resolve(".cproject"));
@@ -75,7 +75,7 @@ void ExporterAndroid::exportSolution(Solution* solution, Path from, Path to, Pla
 
 	Files::copy(Paths::executableDir().resolve(Paths::get("Data", "android", "AndroidManifest.xml")), to.resolve("AndroidManifest.xml"), true);
 	Files::copy(Paths::executableDir().resolve(Paths::get("Data", "android", "project.properties")), to.resolve("project.properties"), true);
-	
+
 	createDirectory(to.resolve(".settings"));
 	if (nvpack) {
 		Files::copy(Paths::executableDir().resolve(Paths::get("Data", "android", "nvidia", "org.eclipse.jdt.core.prefs")), to.resolve(Paths::get(".settings", "org.eclipse.jdt.core.prefs")), true);
@@ -83,11 +83,11 @@ void ExporterAndroid::exportSolution(Solution* solution, Path from, Path to, Pla
 	else {
 		Files::copy(Paths::executableDir().resolve(Paths::get("Data", "android", "org.eclipse.jdt.core.prefs")), to.resolve(Paths::get(".settings", "org.eclipse.jdt.core.prefs")), true);
 	}
-		
+
 	if (nvpack) {
 		Files::copy(Paths::executableDir().resolve(Paths::get("Data", "android", "nvidia", "build.xml")), to.resolve("build.xml"), true);
 	}
-	
+
 	createDirectory(to.resolve("res"));
 	createDirectory(to.resolve(Paths::get("res", "values")));
 	std::string file = readFile(Paths::executableDir().resolve(Paths::get("Data", "android", "strings.xml")).toString());
@@ -95,9 +95,9 @@ void ExporterAndroid::exportSolution(Solution* solution, Path from, Path to, Pla
 	file = replace(file, "{ProjectName}", solution->getName());
 	out->write(file.c_str(), file.size());
 	closeFile();
-		
+
 	createDirectory(to.resolve("jni"));
-		
+
 	if (nvpack) {
 /*
 LOCAL_PATH := $(subst //,/,$(call my-dir))
@@ -125,7 +125,7 @@ $(call import-module,nv_hhdds)
 $(call import-module,nv_log)
 $(call import-module,nv_shader)
 $(call import-module,nv_file)
-$(call import-module,nv_thread) 
+$(call import-module,nv_thread)
 */
 	}
 	writeFile(to.resolve(Paths::get("jni", "Android.mk")));
@@ -148,7 +148,7 @@ $(call import-module,nv_thread)
 	p("include $(BUILD_SHARED_LIBRARY)");
 	p();
 	closeFile();
-	
+
 	/*
 	writeFile(to.resolve(Paths::get("jni", "Application.mk")));
 	p("APP_CPPFLAGS += -fexceptions -frtti");
