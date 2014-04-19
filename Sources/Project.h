@@ -15,9 +15,9 @@ namespace kake {
 		std::string getName();
 		UUID getUuid();
 		bool matches(std::string text, std::string pattern);
-		bool matchesAllSubdirs(Path dir, std::string pattern);
-		std::string stringify(Path path);
-		void searchFiles(Path current);
+		bool matchesAllSubdirs(kmd::Path dir, std::string pattern);
+		std::string stringify(kmd::Path path);
+		void searchFiles(kmd::Path current);
 		void searchFiles();
 		void addFile(std::string file);
 		void addExclude(std::string exclude);
@@ -27,7 +27,7 @@ namespace kake {
 		void addLib(std::string lib);
 		void addLibFor(std::string system, std::string lib);
 		std::vector<std::string>& getFiles();
-		Path getBasedir();
+		kmd::Path getBasedir();
 		std::vector<Project*> getSubProjects();
 		std::vector<std::string> getIncludeDirs();
 		std::vector<std::string> getDefines();
@@ -40,7 +40,7 @@ namespace kake {
 	private:
 		std::string name;
 		std::vector<std::string> files;
-		Path basedir;
+		kmd::Path basedir;
 		std::vector<Project*> subProjects;
 		std::vector<std::string> includeDirs;
 		std::vector<std::string> defines;

@@ -20,6 +20,7 @@ namespace {
 	std::vector<std::string> windowssystems;// = new String[]{"Win32", "x64"};
 }
 
+using namespace kmd;
 using namespace kake;
 
 extern Path koreDir;

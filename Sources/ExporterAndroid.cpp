@@ -5,6 +5,7 @@
 #include "Solution.h"
 #include "StringHelper.h"
 
+using namespace kmd;
 using namespace kake;
 
 extern Path koreDir;

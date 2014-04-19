@@ -5,6 +5,7 @@
 #include "StringHelper.h"
 #include <iostream>
 
+using namespace kmd;
 using namespace kake;
 
 namespace {

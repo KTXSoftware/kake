@@ -11,7 +11,7 @@ namespace kake {
 	public:
 		void execute(std::string exe);
 		void compile(std::string inFilename, std::string outFilename);
-		void link(std::vector<std::string> files, Path output);
-		void exportSolution(Solution* solution, Path from, Path to, Platform platform) override;
+		void link(std::vector<std::string> files, kmd::Path output);
+		void exportSolution(Solution* solution, kmd::Path from, kmd::Path to, Platform platform) override;
 	};
 }

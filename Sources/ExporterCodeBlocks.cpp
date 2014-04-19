@@ -4,6 +4,7 @@
 #include "Solution.h"
 #include "StringHelper.h"
 
+using namespace kmd;
 using namespace kake;
 
 void ExporterCodeBlocks::exportSolution(Solution* solution, Path from, Path to, Platform platform) {

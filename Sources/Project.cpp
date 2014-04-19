@@ -9,6 +9,7 @@
 #include <regex>
 #endif
 
+using namespace kmd;
 using namespace kake;
 
 Path koreDir;

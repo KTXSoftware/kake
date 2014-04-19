@@ -21,8 +21,8 @@ namespace kake {
 		static Solution* createSolution(std::string filename, Platform platform);
 		static Project* evalProjectScript(std::ifstream& script);
 		static Solution* evalSolutionScript(std::ifstream& script, Platform platform);
-		static Solution* create(Path directory, Platform platform);
-		static Path scriptdir;
+		static Solution* create(kmd::Path directory, Platform platform);
+		static kmd::Path scriptdir;
 		bool isRotated();
 		bool isCmd();
 		void setRotated();

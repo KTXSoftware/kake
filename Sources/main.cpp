@@ -28,6 +28,7 @@
 #include <Windows.h>
 #endif
 
+using namespace kmd;
 using namespace kake;
 
 extern Path koreDir;

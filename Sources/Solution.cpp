@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 
+using namespace kmd;
 using namespace kake;
 
 Path Solution::scriptdir;

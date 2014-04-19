@@ -4,6 +4,6 @@
 
 namespace kake {
 	class ExporterTizen : public Exporter {
-		void exportSolution(Solution* solution, Path from, Path to, Platform platform) override;
+		void exportSolution(Solution* solution, kmd::Path from, kmd::Path to, Platform platform) override;
 	};
 }

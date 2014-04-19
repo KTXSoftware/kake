@@ -50,8 +50,8 @@ namespace kake {
 	public:
 		static Directory* findDirectory(std::string dirname, std::vector<Directory*>& directories);
 		static Directory* addDirectory(std::string dirname, std::vector<Directory*>& directories);
-		void exportWorkspace(Path directory, Solution* solution);
+		void exportWorkspace(kmd::Path directory, Solution* solution);
 		static std::string newId();
-		void exportSolution(Solution* solution, Path from, Path to, Platform platform) override;
+		void exportSolution(Solution* solution, kmd::Path from, kmd::Path to, Platform platform) override;
 	};
 }

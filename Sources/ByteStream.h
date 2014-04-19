@@ -31,7 +31,7 @@ namespace kake {
 			return bytes.size();
 		}
 
-		void save(Path path) {
+		void save(kmd::Path path) {
 			std::ofstream f(path.toString(), std::ios::binary);
 			for (size_t i = 0; i < bytes.size(); ++i) f.put(bytes[i]);
 		}

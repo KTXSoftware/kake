@@ -6,6 +6,7 @@
 #include "StringHelper.h"
 #include <stdexcept>
 
+using namespace kmd;
 using namespace kake;
 
 Directory::Directory(std::string dirname) : dirname(dirname) {

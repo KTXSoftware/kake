@@ -17,7 +17,7 @@ Image::Image(byte* data, int size) {
 	this->data = (unsigned*)stbi_load_from_memory(data, size, &x, &y, &comp, 4);
 }
 
-Image::Image(Path path) {
+Image::Image(kmd::Path path) {
 	int comp;
 	data = (unsigned*)stbi_load(path.toString().c_str(), &x, &y, &comp, 4);
 }
@@ -84,7 +84,7 @@ void Image::save(ByteStream& stream) {
 	}
 }
 
-void Image::save(Path path) {
+void Image::save(kmd::Path path) {
 	/*std::ofstream stream(path.toString(), std::ios::binary);
 	for (int y = 0; y < this->y; ++y) {
 		for (int x = 0; x < this->x; ++x) {
