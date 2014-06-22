@@ -38,72 +38,27 @@
 			<Add option="-static -lboost_regex" />
 			<Add option="-pthread" />
 		</Linker>
-		<Unit filename="../Sources/Ball.cpp">
+		<Unit filename="../kmdlib/FileReader.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/ClCompile.cpp">
+		<Unit filename="../kmdlib/Files.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/Exporter.cpp">
+		<Unit filename="../kmdlib/Json.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/ExporterAndroid.cpp">
+		<Unit filename="../kmdlib/Path.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/ExporterCodeBlocks.cpp">
+		<Unit filename="../kmdlib/Reader.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/ExporterEmscripten.cpp">
+		<Unit filename="../kmdlib/stb_image.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/ExporterTizen.cpp" />
-		<Unit filename="../Sources/ExporterTizen.h" />
-		<Unit filename="../Sources/ExporterVisualStudio.cpp">
+		<Unit filename="../kmdlib/StringHelper.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="../Sources/ExporterXCode.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/Files.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/Image.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/Options.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/Path.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/Project.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/Random.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/Solution.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/String.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/UUID.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/main.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../Sources/u128.cpp">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="../kmdlib/FileReader.cpp" />
-		<Unit filename="../kmdlib/FileReader.h" />
-		<Unit filename="../kmdlib/Reader.cpp" />
-		<Unit filename="../kmdlib/Reader.h" />
-		<Unit filename="../kmdlib/stb_image.cpp" />
-		<Unit filename="../kmdlib/stb_image.h" />
-		<Unit filename="../kmdlib/stb_image_write.h" />
 		<Unit filename="../lua/lapi.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -198,6 +153,57 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../lua/lzio.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Ball.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ClCompile.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Exporter.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterAndroid.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterCodeBlocks.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterEmscripten.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterTizen.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterVisualStudio.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/ExporterXCode.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Image.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/main.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Options.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Project.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Random.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/Solution.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/u128.cpp">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../Sources/UUID.cpp">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Extensions>
